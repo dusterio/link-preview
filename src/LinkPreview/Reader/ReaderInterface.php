@@ -8,6 +8,7 @@ interface ReaderInterface
 {
     /**
      * @param LinkInterface $link
+     * @return $this
      */
     public function setLink(LinkInterface $link);
 
@@ -18,6 +19,7 @@ interface ReaderInterface
 
     /**
      * @return LinkInterface
+     * @return $this
      */
-    public function getLinkData();
+    public function readLink();
 } 

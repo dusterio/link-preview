@@ -7,6 +7,7 @@ use LinkPreview\Model\LinkInterface;
 use LinkPreview\Parser\GeneralParser;
 use LinkPreview\Parser\ParserInterface;
 use LinkPreview\Reader\GeneralReader;
+use LinkPreview\Reader\ReaderInterface;
 
 class LinkPreview
 {
@@ -16,6 +17,11 @@ class LinkPreview
     private $link;
 
     /**
+     * @var ReaderInterface $reader
+     */
+    private $reader;
+
+    /**
      * @var ParserInterface[]
      */
     private $parsers = array();
@@ -23,7 +29,17 @@ class LinkPreview
     /**
      * @var boolean
      */
-    private $propagation = true;
+    private $propagation = false;
+
+    /**
+     * @param string|null $url
+     */
+    public function __construct($url = null)
+    {
+        if (null !== $url) {
+            $this->setUrl($url);
+        }
+    }
 
     /**
      * @param string $url Website url to parse information from
@@ -56,6 +72,25 @@ class LinkPreview
     }
 
     /**
+     * @return ReaderInterface
+     */
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @param ReaderInterface $reader
+     * @return $this
+     */
+    public function setReader($reader)
+    {
+        $this->reader = $reader;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function getPropagation()
@@ -64,8 +99,9 @@ class LinkPreview
     }
 
     /**
-     * Set propogation for parsing. If propogation is set to false
-     * then parsing stops after first successful parsing
+     * Set propagation for parsing.
+     * If propagation is set to false, then parsing stops after first successful parsing.
+     * By default it is set as false.
      *
      * @param boolean $propagation
      * @return $this
@@ -129,15 +165,23 @@ class LinkPreview
     {
         $parsed = array();
 
-        if (empty($this->parsers)) {
+        if (null === $this->getParsers()) {
             $this->addDefaultParsers();
         }
+
+        if (null === $this->getReader()) {
+            $this->setReader(new GeneralReader());
+        }
+
+        $reader = $this->getReader()->setLink($this->getLink());
+        $link = $reader->readLink()->getLink();
+        $this->setLink($link);
 
         foreach ($this->getParsers() as $name => $parser) {
             $parser->setLink($this->getLink());
 
             if ($parser->isValidParser()) {
-                $parsed[$name] = $parser->getParsedLink();
+                $parsed[$name] = $parser->parseLink()->getLink();
 
                 if (!$this->getPropagation()) {
                     break;
@@ -153,6 +197,6 @@ class LinkPreview
      */
     protected function addDefaultParsers()
     {
-        $this->addParser(new GeneralParser(new GeneralReader()));
+        $this->addParser(new GeneralParser());
     }
 }

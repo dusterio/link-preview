@@ -3,7 +3,6 @@
 namespace LinkPreview\Parser;
 
 use LinkPreview\Model\LinkInterface;
-use LinkPreview\Reader\ReaderInterface;
 
 class GeneralParser implements ParserInterface
 {
@@ -29,21 +28,6 @@ class GeneralParser implements ParserInterface
      * @var LinkInterface $link
      */
     private $link;
-
-    /**
-     * @var ReaderInterface $reader
-     */
-    private $reader;
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct(ReaderInterface $reader = null)
-    {
-        if (null !== $reader) {
-            $this->setReader($reader);
-        }
-    }
 
     /**
      * @inheritdoc
@@ -74,24 +58,6 @@ class GeneralParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function getReader()
-    {
-        return $this->reader;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setReader($reader)
-    {
-        $this->reader = $reader;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function isValidParser()
     {
         $isValid = false;
@@ -108,12 +74,16 @@ class GeneralParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function getParsedLink()
+    public function parseLink()
     {
         $reader = $this->getReader();
-        $reader->setLink($this->getLink());
+        $reader
+            ->setLink($this->getLink())
+            ->readLink();
 
-        $link = $reader->getLinkData();
+        $this->setLink($reader->getLink());
+
+        $link = $this->getLink();
 
         if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
             $htmlData = $this->parseHtml($link->getContent());
@@ -125,7 +95,7 @@ class GeneralParser implements ParserInterface
             $link->setImage($link->getRealUrl());
         }
 
-        return $link;
+        return $this;
     }
 
     /**

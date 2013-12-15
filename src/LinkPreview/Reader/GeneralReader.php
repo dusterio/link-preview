@@ -18,6 +18,8 @@ class GeneralReader implements ReaderInterface
     public function setLink(LinkInterface $link)
     {
         $this->link = $link;
+
+        return $this;
     }
 
     /**
@@ -31,7 +33,7 @@ class GeneralReader implements ReaderInterface
     /**
      * @inheritdoc
      */
-    public function getLinkData()
+    public function readLink()
     {
         $link = $this->getLink();
 
@@ -42,6 +44,6 @@ class GeneralReader implements ReaderInterface
             ->setContentType($response->getContentType())
             ->setRealUrl($response->getEffectiveUrl());
 
-        return $link;
+        return $this;
     }
 } 

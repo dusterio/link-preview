@@ -8,24 +8,18 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsValidParser()
     {
+        $linkMock = $this->getMockBuilder('LinkPreview\Model\Link')
+            ->setMethods(null)
+            ->getMock();
+
         $parser = new GeneralParser();
-        $parser->setLink($this->getLinkMock('http://github.com'));
+        $parser->setLink($linkMock->setUrl('http://github.com'));
         $this->assertTrue($parser->isValidParser());
 
-        $parser->setLink($this->getLinkMock('http://trololo'));
+        $parser->setLink($linkMock->setUrl('http://trololo'));
         $this->assertFalse($parser->isValidParser());
 
-        $parser->setLink($this->getLinkMock('github.com'));
+        $parser->setLink($linkMock->setUrl('github.com'));
         $this->assertFalse($parser->isValidParser());
-    }
-
-    private function getLinkMock($url)
-    {
-        $link = $this->getMock('LinkPreview\Model\Link', array('getUrl'));
-        $link->expects($this->any())
-            ->method('getUrl')
-            ->will($this->returnValue($url));
-
-        return $link;
     }
 }
