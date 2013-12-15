@@ -29,6 +29,16 @@ class Link implements LinkInterface
      */
     private $image;
 
+    /**
+     * @var string $content Website content
+     */
+    private $content;
+
+    /**
+     * @var string $contentType Website content type
+     */
+    private $contentType;
+
     public function __construct($url = null)
     {
         if (null !== $url) {
@@ -114,5 +124,37 @@ class Link implements LinkInterface
     public function setRealUrl($realUrl)
     {
         $this->realUrl = $realUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param string $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
     }
 }

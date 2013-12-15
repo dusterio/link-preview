@@ -8,11 +8,19 @@
     "authors": [
         {
             "name": "Tadas Juozapaitis",
-            "email": "kasp3rito@gmail.com"
+            "email": "kasp3rito@gmail.com",
+            "homepage": "http://jugbit.com"
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.0"
+    },
+    "suggest": {
         "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "LinkPreview": "src/"
+        }
     }
 }

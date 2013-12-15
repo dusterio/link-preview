@@ -30,6 +30,16 @@ interface LinkInterface
     public function setImage($image);
 
     /**
+     * @param string $content
+     */
+    public function setContent($content);
+
+    /**
+     * @param string $contentType
+     */
+    public function setContentType($contentType);
+
+    /**
      * @return string
      */
     public function getUrl();
@@ -53,4 +63,14 @@ interface LinkInterface
      * @return string
      */
     public function getImage();
+
+    /**
+     * @return string
+     */
+    public function getContent();
+
+    /**
+     * @return string
+     */
+    public function getContentType();
 } 

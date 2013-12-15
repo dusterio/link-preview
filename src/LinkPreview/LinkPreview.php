@@ -6,18 +6,24 @@ use LinkPreview\Model\Link;
 use LinkPreview\Model\LinkInterface;
 use LinkPreview\Parser\GeneralParser;
 use LinkPreview\Parser\ParserInterface;
+use LinkPreview\Reader\CurlReader;
 
 class LinkPreview
 {
     /**
      * @var LinkInterface $link
      */
-    private $link = '';
+    private $link;
 
     /**
      * @var ParserInterface[]
      */
     private $parsers = array();
+
+    /**
+     * @var boolean
+     */
+    private $propagation = true;
 
     /**
      * @param string $url Website url to parse information from
@@ -41,6 +47,22 @@ class LinkPreview
     public function getLink()
     {
         return $this->link;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPropagation()
+    {
+        return $this->propagation;
+    }
+
+    /**
+     * @param boolean $propagation
+     */
+    public function setPropagation($propagation)
+    {
+        $this->propagation = $propagation;
     }
 
     /**
@@ -95,6 +117,10 @@ class LinkPreview
 
             if ($parser->isValidParser()) {
                 $parsed[$name] = $parser->getParsedLink();
+
+                if (!$this->getPropagation()) {
+                    break;
+                }
             }
         }
 
@@ -106,6 +132,6 @@ class LinkPreview
      */
     protected function addDefaultParsers()
     {
-        $this->addParser(new GeneralParser());
+        $this->addParser(new GeneralParser(new CurlReader()));
     }
 }

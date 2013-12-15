@@ -3,6 +3,7 @@
 namespace LinkPreview\Parser;
 
 use LinkPreview\Model\LinkInterface;
+use LinkPreview\Reader\ReaderInterface;
 
 class GeneralParser implements ParserInterface
 {
@@ -28,6 +29,21 @@ class GeneralParser implements ParserInterface
      * @var LinkInterface $link
      */
     private $link;
+
+    /**
+     * @var ReaderInterface $reader
+     */
+    private $reader;
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct(ReaderInterface $reader = null)
+    {
+        if (null !== $reader) {
+            $this->setReader($reader);
+        }
+    }
 
     /**
      * @inheritdoc
@@ -56,6 +72,22 @@ class GeneralParser implements ParserInterface
     /**
      * @inheritdoc
      */
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setReader($reader)
+    {
+        $this->reader = $reader;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function isValidParser()
     {
         $isValid = false;
@@ -70,76 +102,26 @@ class GeneralParser implements ParserInterface
     }
 
     /**
-     * Get content from link
-     *
-     * @return array
+     * @inheritdoc
      */
-    protected function getLinkData()
+    public function getParsedLink()
     {
-        $url = $this->getLink()->getUrl();
+        $reader = $this->getReader();
+        $reader->setLink($this->getLink());
 
-        $options = array(
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => false,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_USERAGENT => "LinkPreview",
-            CURLOPT_AUTOREFERER => true,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_MAXREDIRS => 5,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-        );
+        $link = $reader->getLinkData();
 
-        $ch = curl_init($url);
-        curl_setopt_array($ch, $options);
-        $content = curl_exec($ch);
-        $header = curl_getinfo($ch);
-        curl_close($ch);
+        if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
+            $htmlData = $this->parseHtml($link->getContent());
 
-        $data = array(
-            'content' => $content,
-            'content_type' => $header['content_type'],
-            'url' => $header['url'],
-        );
-
-        return $data;
-    }
-
-    /**
-     * Extract required data from link
-     *
-     * @return array
-     */
-    protected function parseLink()
-    {
-        $data = array(
-            'url' => $this->getLink()->getUrl(),
-            'image' => '',
-            'title' => '',
-            'description' => '',
-        );
-
-        $linkData = $this->getLinkData();
-
-        if (!strncmp($linkData['content_type'], 'text/', strlen('text/'))) {
-            $htmlData = $this->parseHtml($linkData['content']);
-
-            $data = array(
-                'url' => $linkData['url'],
-                'image' => $htmlData['image'],
-                'title' => $htmlData['title'],
-                'description' => $htmlData['description'],
-            );
-
-        } elseif (!strncmp($linkData['content_type'], 'image/', strlen('image/'))) {
-            $data = array(
-                'url' => $linkData['url'],
-                'image' => $linkData['url'],
-            );
+            $link->setTitle($htmlData['title']);
+            $link->setDescription($htmlData['description']);
+            $link->setImage($htmlData['image']);
+        } elseif (!strncmp($link->getContentType(), 'image/', strlen('image/'))) {
+            $link->setImage($link->getRealUrl());
         }
 
-        return $data;
+        return $link;
     }
 
     /**
@@ -200,21 +182,5 @@ class GeneralParser implements ParserInterface
         }
 
         return $data;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getParsedLink()
-    {
-        $data = $this->parseLink();
-
-        $link = $this->getLink();
-        $link->setRealUrl($data['url']);
-        $link->setImage($data['image']);
-        $link->setTitle($data['title']);
-        $link->setDescription($data['description']);
-
-        return $link;
     }
 }

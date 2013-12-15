@@ -3,9 +3,15 @@
 namespace LinkPreview\Parser;
 
 use LinkPreview\Model\LinkInterface;
+use LinkPreview\Reader\ReaderInterface;
 
 interface ParserInterface
 {
+    /**
+     * @param ReaderInterface $reader
+     */
+    public function __construct(ReaderInterface $reader = null);
+
     /**
      * Parser name
      *
@@ -22,6 +28,16 @@ interface ParserInterface
      * @return LinkInterface
      */
     public function getLink();
+
+    /**
+     * @param ReaderInterface $reader
+     */
+    public function setReader($reader);
+
+    /**
+     * @return ReaderInterface
+     */
+    public function getReader();
 
     /**
      * @return boolean
