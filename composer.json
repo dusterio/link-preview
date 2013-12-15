@@ -13,10 +13,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
-    },
-    "suggest": {
-        "ext-curl": "*"
+        "php": ">=5.3.0",
+        "guzzle/guzzle": "~3.8"
     },
     "autoload": {
         "psr-0": {

@@ -6,7 +6,7 @@ use LinkPreview\Model\Link;
 use LinkPreview\Model\LinkInterface;
 use LinkPreview\Parser\GeneralParser;
 use LinkPreview\Parser\ParserInterface;
-use LinkPreview\Reader\CurlReader;
+use LinkPreview\Reader\GeneralReader;
 
 class LinkPreview
 {
@@ -27,18 +27,24 @@ class LinkPreview
 
     /**
      * @param string $url Website url to parse information from
+     * @return $this
      */
     public function setUrl($url)
     {
         $this->setLink(new Link($url));
+
+        return $this;
     }
 
     /**
      * @param LinkInterface $link Link model
+     * @return $this
      */
     public function setLink(LinkInterface $link)
     {
         $this->link = $link;
+
+        return $this;
     }
 
     /**
@@ -58,11 +64,17 @@ class LinkPreview
     }
 
     /**
+     * Set propogation for parsing. If propogation is set to false
+     * then parsing stops after first successful parsing
+     *
      * @param boolean $propagation
+     * @return $this
      */
     public function setPropagation($propagation)
     {
         $this->propagation = $propagation;
+
+        return $this;
     }
 
     /**
@@ -75,30 +87,39 @@ class LinkPreview
 
     /**
      * @param ParserInterface[] $parsers
+     * @return $this
      */
     public function setParsers($parsers)
     {
         $this->parsers = $parsers;
+
+        return $this;
     }
 
     /**
      * Add parser to the beginning of parsers list
      *
      * @param ParserInterface $parser
+     * @return $this
      */
     public function addParser(ParserInterface $parser)
     {
         $this->parsers = array($parser->__toString() => $parser) + $this->parsers;
+
+        return $this;
     }
 
     /**
      * @param string $name Parser name
+     * @return $this
      */
     public function removeParser($name)
     {
         if (in_array($name, $this->parsers)) {
             unset($this->parsers[$name]);
         }
+
+        return $this;
     }
 
     /**
@@ -132,6 +153,6 @@ class LinkPreview
      */
     protected function addDefaultParsers()
     {
-        $this->addParser(new GeneralParser(new CurlReader()));
+        $this->addParser(new GeneralParser(new GeneralReader()));
     }
 }

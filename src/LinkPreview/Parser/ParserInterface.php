@@ -21,6 +21,7 @@ interface ParserInterface
 
     /**
      * @param LinkInterface $link
+     * @return $this
      */
     public function setLink(LinkInterface $link);
 
@@ -31,6 +32,7 @@ interface ParserInterface
 
     /**
      * @param ReaderInterface $reader
+     * @return $this
      */
     public function setReader($reader);
 

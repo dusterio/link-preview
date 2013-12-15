@@ -44,6 +44,8 @@ class Link implements LinkInterface
         if (null !== $url) {
             $this->setUrl($url);
         }
+
+        return $this;
     }
 
     /**
@@ -60,6 +62,8 @@ class Link implements LinkInterface
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -76,6 +80,8 @@ class Link implements LinkInterface
     public function setImage($image)
     {
         $this->image = $image;
+
+        return $this;
     }
 
     /**
@@ -92,6 +98,8 @@ class Link implements LinkInterface
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -108,6 +116,8 @@ class Link implements LinkInterface
     public function setUrl($url)
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -124,10 +134,12 @@ class Link implements LinkInterface
     public function setRealUrl($realUrl)
     {
         $this->realUrl = $realUrl;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getContent()
     {
@@ -135,15 +147,17 @@ class Link implements LinkInterface
     }
 
     /**
-     * @param string $content
+     * @inheritdoc
      */
     public function setContent($content)
     {
         $this->content = $content;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getContentType()
     {
@@ -151,10 +165,12 @@ class Link implements LinkInterface
     }
 
     /**
-     * @param string $contentType
+     * @inheritdoc
      */
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
+        return $this;
     }
 }

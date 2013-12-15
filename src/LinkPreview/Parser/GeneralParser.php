@@ -59,6 +59,8 @@ class GeneralParser implements ParserInterface
     public function setLink(LinkInterface $link)
     {
         $this->link = $link;
+
+        return $this;
     }
 
     /**
@@ -83,6 +85,8 @@ class GeneralParser implements ParserInterface
     public function setReader($reader)
     {
         $this->reader = $reader;
+
+        return $this;
     }
 
     /**
@@ -114,9 +118,9 @@ class GeneralParser implements ParserInterface
         if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
             $htmlData = $this->parseHtml($link->getContent());
 
-            $link->setTitle($htmlData['title']);
-            $link->setDescription($htmlData['description']);
-            $link->setImage($htmlData['image']);
+            $link->setTitle($htmlData['title'])
+                ->setDescription($htmlData['description'])
+                ->setImage($htmlData['image']);
         } elseif (!strncmp($link->getContentType(), 'image/', strlen('image/'))) {
             $link->setImage($link->getRealUrl());
         }
@@ -146,16 +150,18 @@ class GeneralParser implements ParserInterface
         foreach ($doc->getElementsByTagName('meta') as $meta) {
             if ($meta->getAttribute('itemprop') == 'image') {
                 $data['image'] = $meta->getAttribute('content');
-            }
-            if ($meta->getAttribute('property') == 'og:image') {
+            } elseif ($meta->getAttribute('property') == 'og:image') {
                 $data['image'] = $meta->getAttribute('content');
+            } elseif ($meta->getAttribute('property') == 'twitter:image') {
+                $data['image'] = $meta->getAttribute('value');
             }
 
             if ($meta->getAttribute('itemprop') == 'name') {
                 $data['title'] = $meta->getAttribute('content');
-            }
-            if ($meta->getAttribute('property') == 'og:title') {
+            } elseif ($meta->getAttribute('property') == 'og:title') {
                 $data['title'] = $meta->getAttribute('content');
+            } elseif ($meta->getAttribute('property') == 'twitter:title') {
+                $data['title'] = $meta->getAttribute('value');
             }
 
             if ($meta->getAttribute('itemprop') == 'description') {
