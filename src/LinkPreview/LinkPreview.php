@@ -42,6 +42,8 @@ class LinkPreview
     }
 
     /**
+     * Set website url to a general model
+     *
      * @param string $url Website url to parse information from
      * @return $this
      */
@@ -53,6 +55,8 @@ class LinkPreview
     }
 
     /**
+     * Set model
+     *
      * @param LinkInterface $link Link model
      * @return $this
      */
@@ -64,6 +68,8 @@ class LinkPreview
     }
 
     /**
+     * Get model
+     *
      * @return LinkInterface
      */
     public function getLink()
@@ -72,6 +78,8 @@ class LinkPreview
     }
 
     /**
+     * Get reader
+     *
      * @return ReaderInterface
      */
     public function getReader()
@@ -80,6 +88,8 @@ class LinkPreview
     }
 
     /**
+     * Set reader
+     *
      * @param ReaderInterface $reader
      * @return $this
      */
@@ -91,6 +101,8 @@ class LinkPreview
     }
 
     /**
+     * Get propagation
+     *
      * @return boolean
      */
     public function getPropagation()
@@ -114,6 +126,8 @@ class LinkPreview
     }
 
     /**
+     * Get parsers
+     *
      * @return ParserInterface[]
      */
     public function getParsers()
@@ -122,6 +136,8 @@ class LinkPreview
     }
 
     /**
+     * Set parsers
+     *
      * @param ParserInterface[] $parsers
      * @return $this
      */
@@ -146,6 +162,8 @@ class LinkPreview
     }
 
     /**
+     * Remove parser from parsers list
+     *
      * @param string $name Parser name
      * @return $this
      */
@@ -159,6 +177,8 @@ class LinkPreview
     }
 
     /**
+     * Get parsed model array with parser name as a key
+     *
      * @return LinkInterface[]
      */
     public function getParsed()
@@ -193,7 +213,7 @@ class LinkPreview
     }
 
     /**
-     * Add default parsers from directory
+     * Add default parsers
      */
     protected function addDefaultParsers()
     {
