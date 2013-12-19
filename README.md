@@ -17,7 +17,7 @@ To install LinkPreview with composer you need to create `composer.json` in your 
 ```json
 {
     "require": {
-        "kasp3r/LinkPreview": ">=1.0.0"
+        "kasp3r/link-preview": ">=1.0.0"
     }
 }
 ```
@@ -29,7 +29,7 @@ $ wget -nc http://getcomposer.org/composer.phar
 $ php composer.phar install
 ```
 
-Library will be installed in vendor/kasp3r/LinkPreview
+Library will be installed in vendor/kasp3r/link-preview
 
 In your project include composer autoload file from vendor/.composer/autoload.php
 
