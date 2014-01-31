@@ -76,13 +76,6 @@ class GeneralParser implements ParserInterface
      */
     public function parseLink()
     {
-        $reader = $this->getReader();
-        $reader
-            ->setLink($this->getLink())
-            ->readLink();
-
-        $this->setLink($reader->getLink());
-
         $link = $this->getLink();
 
         if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {

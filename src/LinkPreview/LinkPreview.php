@@ -185,7 +185,8 @@ class LinkPreview
     {
         $parsed = array();
 
-        if (null === $this->getParsers()) {
+        $parsers = $this->getParsers();
+        if (empty($parsers)) {
             $this->addDefaultParsers();
         }
 

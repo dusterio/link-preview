@@ -31,15 +31,15 @@ $ php composer.phar install
 
 Library will be installed in vendor/kasp3r/link-preview
 
-In your project include composer autoload file from vendor/.composer/autoload.php
+In your project include composer autoload file from vendor/autoload.php
 
 ## Usage
 
 ```php
 $linkPreview = new LinkPreview('http://github.com');
-$parsed = $link->getParsed();
+$parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
-    echo $parserName . PHP_EOL . PHP_EOL
+    echo $parserName . PHP_EOL . PHP_EOL;
 
     echo $link->getUrl() . PHP_EOL;
     echo $link->getRealUrl() . PHP_EOL;
