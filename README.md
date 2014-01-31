@@ -17,7 +17,7 @@ To install LinkPreview with composer you need to create `composer.json` in your 
 ```json
 {
     "require": {
-        "kasp3r/link-preview": ">=1.0.0"
+        "kasp3r/link-preview": "dev-master"
     }
 }
 ```
