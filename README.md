@@ -36,6 +36,10 @@ In your project include composer autoload file from vendor/autoload.php
 ## Usage
 
 ```php
+require_once __DIR__ . "/../vendor/autoload.php";
+
+use LinkPreview\LinkPreview;
+
 $linkPreview = new LinkPreview('http://github.com');
 $parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
