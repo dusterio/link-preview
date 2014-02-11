@@ -36,10 +36,6 @@ In your project include composer autoload file from vendor/autoload.php
 ## Usage
 
 ```php
-require_once __DIR__ . "/../vendor/autoload.php";
-
-use LinkPreview\LinkPreview;
-
 $linkPreview = new LinkPreview('http://github.com');
 $parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
@@ -51,6 +47,20 @@ foreach ($parsed as $parserName => $link) {
     echo $link->getDescription() . PHP_EOL;
     echo $link->getImage() . PHP_EOL;
 }
+```
+
+```
+#Output
+
+
+general
+
+http://github.com
+https://github.com/
+GitHub Â· Build software better, together.
+GitHub is the best place to build software together. Over 4 million people use GitHub to share code.
+https://github.global.ssl.fastly.net/images/modules/open_graph/github-octocat.png
+
 ```
 
 ## Todo
