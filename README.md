@@ -49,6 +49,20 @@ foreach ($parsed as $parserName => $link) {
 }
 ```
 
+```
+#Output
+
+
+general
+
+http://github.com
+https://github.com/
+GitHub Â· Build software better, together.
+GitHub is the best place to build software together. Over 4 million people use GitHub to share code.
+https://github.global.ssl.fastly.net/images/modules/open_graph/github-octocat.png
+
+```
+
 ## Todo
 1. Add more unit tests
 2. Update documentation
