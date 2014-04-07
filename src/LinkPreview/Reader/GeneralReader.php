@@ -44,6 +44,6 @@ class GeneralReader implements ReaderInterface
             ->setContentType($response->getContentType())
             ->setRealUrl($response->getEffectiveUrl());
 
-        return $this;
+        return $link;
     }
 } 

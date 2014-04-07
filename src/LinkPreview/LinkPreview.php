@@ -2,24 +2,17 @@
 
 namespace LinkPreview;
 
-use LinkPreview\Model\Link;
 use LinkPreview\Model\LinkInterface;
 use LinkPreview\Parser\GeneralParser;
 use LinkPreview\Parser\ParserInterface;
-use LinkPreview\Reader\GeneralReader;
-use LinkPreview\Reader\ReaderInterface;
+use LinkPreview\Parser\YoutubeParser;
 
 class LinkPreview
 {
     /**
-     * @var LinkInterface $link
+     * @var string $url
      */
-    private $link;
-
-    /**
-     * @var ReaderInterface $reader
-     */
-    private $reader;
+    private $url;
 
     /**
      * @var ParserInterface[]
@@ -49,55 +42,17 @@ class LinkPreview
      */
     public function setUrl($url)
     {
-        $this->setLink(new Link($url));
+        $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Set model
-     *
-     * @param LinkInterface $link Link model
-     * @return $this
+     * @return string
      */
-    public function setLink(LinkInterface $link)
+    public function getUrl()
     {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * Get model
-     *
-     * @return LinkInterface
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Get reader
-     *
-     * @return ReaderInterface
-     */
-    public function getReader()
-    {
-        return $this->reader;
-    }
-
-    /**
-     * Set reader
-     *
-     * @param ReaderInterface $reader
-     * @return $this
-     */
-    public function setReader($reader)
-    {
-        $this->reader = $reader;
-
-        return $this;
+        return $this->url;
     }
 
     /**
@@ -190,19 +145,11 @@ class LinkPreview
             $this->addDefaultParsers();
         }
 
-        if (null === $this->getReader()) {
-            $this->setReader(new GeneralReader());
-        }
-
-        $reader = $this->getReader()->setLink($this->getLink());
-        $link = $reader->readLink()->getLink();
-        $this->setLink($link);
-
         foreach ($this->getParsers() as $name => $parser) {
-            $parser->setLink($this->getLink());
+            $parser->getLink()->setUrl($this->getUrl());
 
             if ($parser->isValidParser()) {
-                $parsed[$name] = $parser->parseLink()->getLink();
+                $parsed[$name] = $parser->parseLink();
 
                 if (!$this->getPropagation()) {
                     break;
@@ -219,5 +166,6 @@ class LinkPreview
     protected function addDefaultParsers()
     {
         $this->addParser(new GeneralParser());
+        $this->addParser(new YoutubeParser());
     }
 }

@@ -2,7 +2,10 @@
 
 namespace LinkPreview\Parser;
 
+use LinkPreview\Model\Link;
 use LinkPreview\Model\LinkInterface;
+use LinkPreview\Reader\GeneralReader;
+use LinkPreview\Reader\ReaderInterface;
 
 class GeneralParser implements ParserInterface
 {
@@ -30,11 +33,50 @@ class GeneralParser implements ParserInterface
     private $link;
 
     /**
+     * @var ReaderInterface $reader
+     */
+    private $reader;
+
+    public function __construct(ReaderInterface $reader = null, LinkInterface $link = null)
+    {
+        if (null !== $reader) {
+            $this->setReader($reader);
+        } else {
+            $this->setReader(new GeneralReader());
+        }
+
+        if (null !== $link) {
+            $this->setLink($link);
+        } else {
+            $this->setLink(new Link());
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function __toString()
     {
         return 'general';
+    }
+
+    /**
+     * @return ReaderInterface
+     */
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @param ReaderInterface $reader
+     * @return $this
+     */
+    public function setReader(ReaderInterface $reader)
+    {
+        $this->reader = $reader;
+
+        return $this;
     }
 
     /**
@@ -71,11 +113,19 @@ class GeneralParser implements ParserInterface
         return $isValid;
     }
 
+    private function readLink()
+    {
+        $reader = $this->getReader()->setLink($this->getLink());
+        $this->setLink($reader->readLink());
+    }
+
     /**
      * @inheritdoc
      */
     public function parseLink()
     {
+        $this->readLink();
+
         $link = $this->getLink();
 
         if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
@@ -88,7 +138,7 @@ class GeneralParser implements ParserInterface
             $link->setImage($link->getRealUrl());
         }
 
-        return $this;
+        return $link;
     }
 
     /**

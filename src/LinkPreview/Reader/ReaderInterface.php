@@ -25,7 +25,6 @@ interface ReaderInterface
      * Read and update model
      *
      * @return LinkInterface
-     * @return $this
      */
     public function readLink();
 } 
