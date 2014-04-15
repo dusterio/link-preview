@@ -13,6 +13,11 @@ class GeneralReader implements ReaderInterface
     private $link;
 
     /**
+     * @var Client $client
+     */
+    private $client;
+
+    /**
      * @inheritdoc
      */
     public function setLink(LinkInterface $link)
@@ -31,13 +36,34 @@ class GeneralReader implements ReaderInterface
     }
 
     /**
+     * @return Client
+     */
+    public function getClient()
+    {
+        if (!$this->client) {
+            $this->client = new Client();
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * @inheritdoc
      */
     public function readLink()
     {
         $link = $this->getLink();
 
-        $client = new Client($link->getUrl());
+        $client = $this->getClient();
+        $client->setBaseUrl($link->getUrl());
         $response = $client->get()->send();
 
         $link->setContent($response->getBody(true))

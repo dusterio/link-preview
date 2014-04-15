@@ -8,9 +8,7 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsValidParser()
     {
-        $linkMock = $this->getMockBuilder('LinkPreview\Model\Link')
-            ->setMethods(null)
-            ->getMock();
+        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
 
         $parser = new GeneralParser();
         $parser->setLink($linkMock->setUrl('http://github.com'));
