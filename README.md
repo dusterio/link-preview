@@ -36,6 +36,8 @@ In your project include composer autoload file from vendor/autoload.php
 ## Usage
 
 ```php
+use LinkPreview\LinkPreview;
+
 $linkPreview = new LinkPreview('http://github.com');
 $parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
@@ -62,7 +64,12 @@ GitHub is the best place to build software together. Over 4 million people use G
 https://github.global.ssl.fastly.net/images/modules/open_graph/github-octocat.png
 ```
 
+###Youtube example
+
 ```php
+use LinkPreview\LinkPreview;
+use LinkPreview\Model\VideoLink;
+
 $linkPreview = new LinkPreview('https://www.youtube.com/watch?v=8ZcmTl_1ER8');
 $parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
@@ -73,8 +80,10 @@ foreach ($parsed as $parserName => $link) {
     echo $link->getTitle() . PHP_EOL;
     echo $link->getDescription() . PHP_EOL;
     echo $link->getImage() . PHP_EOL;
-    echo $link->getVideoId() . PHP_EOL;
-    echo $link->getEmbedCode() . PHP_EOL;
+    if ($link instanceof VideoLink) {
+        echo $link->getVideoId() . PHP_EOL;
+        echo $link->getEmbedCode() . PHP_EOL;
+    }
 }
 ```
 
