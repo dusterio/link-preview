@@ -2,51 +2,55 @@
 
 namespace LinkPreview\Model;
 
+/**
+ * Interface LinkInterface
+ */
 interface LinkInterface
 {
     /**
-     * Set website url
-     *
-     * @param string $url
-     * @return $this
+     * Get source code
+     * @return string
      */
-    public function setUrl($url);
+    public function getContent();
 
     /**
-     * Set real url after all redirects
-     *
-     * @param string $realUrl
-     * @return $this
+     * Get source content type (example: text/html, image/jpg)
+     * @return string
      */
-    public function setRealUrl($realUrl);
+    public function getContentType();
 
     /**
-     * Set title
-     *
-     * @param string $title
-     * @return $this
+     * Get description
+     * @return string
      */
-    public function setTitle($title);
+    public function getDescription();
 
     /**
-     * Set description
-     *
-     * @param string $description
-     * @return $this
+     * Get image url
+     * @return string
      */
-    public function setDescription($description);
+    public function getImage();
 
     /**
-     * Set image url
-     *
-     * @param string $image
-     * @return $this
+     * Get real url after all redirects
+     * @return string
      */
-    public function setImage($image);
+    public function getRealUrl();
+
+    /**
+     * Get title
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * Get website url
+     * @return string
+     */
+    public function getUrl();
 
     /**
      * Set source code
-     *
      * @param string $content
      * @return $this
      */
@@ -54,58 +58,43 @@ interface LinkInterface
 
     /**
      * Set source content type (example: text/html, image/jpg)
-     *
      * @param string $contentType
      * @return $this
      */
     public function setContentType($contentType);
 
     /**
-     * Get website url
-     *
-     * @return string
+     * Set description
+     * @param string $description
+     * @return $this
      */
-    public function getUrl();
+    public function setDescription($description);
 
     /**
-     * Get real url after all redirects
-     *
-     * @return string
+     * Set image url
+     * @param string $image
+     * @return $this
      */
-    public function getRealUrl();
+    public function setImage($image);
 
     /**
-     * Get title
-     *
-     * @return string
+     * Set real url after all redirects
+     * @param string $realUrl
+     * @return $this
      */
-    public function getTitle();
+    public function setRealUrl($realUrl);
 
     /**
-     * Get description
-     *
-     * @return string
+     * Set title
+     * @param string $title
+     * @return $this
      */
-    public function getDescription();
+    public function setTitle($title);
 
     /**
-     * Get image url
-     *
-     * @return string
+     * Set website url
+     * @param string $url
+     * @return $this
      */
-    public function getImage();
-
-    /**
-     * Get source code
-     *
-     * @return string
-     */
-    public function getContent();
-
-    /**
-     * Get source content type (example: text/html, image/jpg)
-     *
-     * @return string
-     */
-    public function getContentType();
-} 
+    public function setUrl($url);
+}
