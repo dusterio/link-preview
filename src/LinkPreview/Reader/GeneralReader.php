@@ -5,35 +5,19 @@ namespace LinkPreview\Reader;
 use Guzzle\Http\Client;
 use LinkPreview\Model\LinkInterface;
 
+/**
+ * Class GeneralReader
+ */
 class GeneralReader implements ReaderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    private $link;
-
     /**
      * @var Client $client
      */
     private $client;
-
     /**
      * @inheritdoc
      */
-    public function setLink(LinkInterface $link)
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
+    private $link;
 
     /**
      * @return Client
@@ -58,6 +42,24 @@ class GeneralReader implements ReaderInterface
     /**
      * @inheritdoc
      */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setLink(LinkInterface $link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function readLink()
     {
         $link = $this->getLink();
@@ -72,4 +74,4 @@ class GeneralReader implements ReaderInterface
 
         return $link;
     }
-} 
+}

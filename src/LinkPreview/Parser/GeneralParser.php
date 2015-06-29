@@ -7,6 +7,9 @@ use LinkPreview\Model\LinkInterface;
 use LinkPreview\Reader\GeneralReader;
 use LinkPreview\Reader\ReaderInterface;
 
+/**
+ * Class GeneralParser
+ */
 class GeneralParser implements ParserInterface
 {
     /**
@@ -37,6 +40,10 @@ class GeneralParser implements ParserInterface
      */
     private $reader;
 
+    /**
+     * @param ReaderInterface $reader
+     * @param LinkInterface   $link
+     */
     public function __construct(ReaderInterface $reader = null, LinkInterface $link = null)
     {
         if (null !== $reader) {
@@ -61,6 +68,24 @@ class GeneralParser implements ParserInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setLink(LinkInterface $link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
      * @return ReaderInterface
      */
     public function getReader()
@@ -82,24 +107,6 @@ class GeneralParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function setLink(LinkInterface $link)
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function isValidParser()
     {
         $isValid = false;
@@ -111,12 +118,6 @@ class GeneralParser implements ParserInterface
         }
 
         return $isValid;
-    }
-
-    private function readLink()
-    {
-        $reader = $this->getReader()->setLink($this->getLink());
-        $this->setLink($reader->readLink());
     }
 
     /**
@@ -143,17 +144,16 @@ class GeneralParser implements ParserInterface
 
     /**
      * Extract required data from html source
-     *
      * @param $html
      * @return array
      */
     protected function parseHtml($html)
     {
-        $data = array(
+        $data = [
             'image' => '',
             'title' => '',
-            'description' => '',
-        );
+            'description' => ''
+        ];
 
         libxml_use_internal_errors(true);
         $doc = new \DOMDocument();
@@ -161,26 +161,26 @@ class GeneralParser implements ParserInterface
 
         /** @var \DOMElement $meta */
         foreach ($doc->getElementsByTagName('meta') as $meta) {
-            if ($meta->getAttribute('itemprop') == 'image') {
+            if ($meta->getAttribute('itemprop') === 'image') {
                 $data['image'] = $meta->getAttribute('content');
-            } elseif ($meta->getAttribute('property') == 'og:image') {
+            } elseif ($meta->getAttribute('property') === 'og:image') {
                 $data['image'] = $meta->getAttribute('content');
-            } elseif ($meta->getAttribute('property') == 'twitter:image') {
+            } elseif ($meta->getAttribute('property') === 'twitter:image') {
                 $data['image'] = $meta->getAttribute('value');
             }
 
-            if ($meta->getAttribute('itemprop') == 'name') {
+            if ($meta->getAttribute('itemprop') === 'name') {
                 $data['title'] = $meta->getAttribute('content');
-            } elseif ($meta->getAttribute('property') == 'og:title') {
+            } elseif ($meta->getAttribute('property') === 'og:title') {
                 $data['title'] = $meta->getAttribute('content');
-            } elseif ($meta->getAttribute('property') == 'twitter:title') {
+            } elseif ($meta->getAttribute('property') === 'twitter:title') {
                 $data['title'] = $meta->getAttribute('value');
             }
 
-            if ($meta->getAttribute('itemprop') == 'description') {
+            if ($meta->getAttribute('itemprop') === 'description') {
                 $data['title'] = $meta->getAttribute('content');
             }
-            if ($meta->getAttribute('property') == 'og:description') {
+            if ($meta->getAttribute('property') === 'og:description') {
                 $data['description'] = $meta->getAttribute('content');
             }
         }
@@ -194,12 +194,21 @@ class GeneralParser implements ParserInterface
 
         if (empty($data['description'])) {
             foreach ($doc->getElementsByTagName('meta') as $meta) {
-                if ($meta->getAttribute('name') == 'description') {
+                if ($meta->getAttribute('name') === 'description') {
                     $data['description'] = $meta->getAttribute('content');
                 }
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Read link
+     */
+    private function readLink()
+    {
+        $reader = $this->getReader()->setLink($this->getLink());
+        $this->setLink($reader->readLink());
     }
 }
