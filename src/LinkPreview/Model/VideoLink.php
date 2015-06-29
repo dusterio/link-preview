@@ -2,41 +2,23 @@
 
 namespace LinkPreview\Model;
 
+/**
+ * Class VideoLink
+ */
 class VideoLink extends Link
 {
-    /**
-     * @var string $video Url to video
-     */
-    private $video;
-
     /**
      * @var string $embedCode Video embed code
      */
     private $embedCode;
-
+    /**
+     * @var string $video Url to video
+     */
+    private $video;
     /**
      * @var string $videoId Video identification code
      */
     private $videoId;
-
-    /**
-     * @return string
-     */
-    public function getVideo()
-    {
-        return $this->video;
-    }
-
-    /**
-     * @param string $video
-     * @return $this
-     */
-    public function setVideo($video)
-    {
-        $this->video = $video;
-
-        return $this;
-    }
 
     /**
      * @return string
@@ -60,6 +42,25 @@ class VideoLink extends Link
     /**
      * @return string
      */
+    public function getVideo()
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param string $video
+     * @return $this
+     */
+    public function setVideo($video)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getVideoId()
     {
         return $this->videoId;
@@ -72,6 +73,4 @@ class VideoLink extends Link
     {
         $this->videoId = $videoId;
     }
-
-
 }

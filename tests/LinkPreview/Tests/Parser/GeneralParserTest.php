@@ -6,18 +6,29 @@ use LinkPreview\Parser\GeneralParser;
 
 class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testIsValidParser()
+    /**
+     * @dataProvider urlProvider
+     * @param string $url
+     * @param bool $expectedResult
+     */
+    public function testIsValidParser($url, $expectedResult)
     {
         $linkMock = $this->getMock('LinkPreview\Model\Link', null);
 
         $parser = new GeneralParser();
-        $parser->setLink($linkMock->setUrl('http://github.com'));
-        $this->assertTrue($parser->isValidParser());
+        $parser->setLink($linkMock->setUrl($url));
+        self::assertEquals($parser->isValidParser(), $expectedResult);
+    }
 
-        $parser->setLink($linkMock->setUrl('http://trololo'));
-        $this->assertFalse($parser->isValidParser());
-
-        $parser->setLink($linkMock->setUrl('github.com'));
-        $this->assertFalse($parser->isValidParser());
+    /**
+     * @return array
+     */
+    public function urlProvider()
+    {
+        return [
+            ['http://github.com', true],
+            ['http://trololo', false],
+            ['github.com', false]
+        ];
     }
 }

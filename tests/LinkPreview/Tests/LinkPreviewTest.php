@@ -6,6 +6,14 @@ use LinkPreview\LinkPreview;
 
 class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 {
+    public function testAddDefaultParsers()
+    {
+        $linkPreview = new LinkPreview();
+        $linkPreview->getParsed();
+
+        self::assertArrayHasKey('general', $linkPreview->getParsers());
+    }
+
     public function testAddParser()
     {
         $generalParserMock = $this->getMock('LinkPreview\Parser\GeneralParser', null);
@@ -16,14 +24,40 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
         // check if parser is added to the list
         $linkPreview->addParser($generalParserMock);
         $parsers = $linkPreview->getParsers();
-        $this->assertContains('general', $parsers);
+        self::assertContains('general', $parsers);
 
         // check if parser added to the beginning of the list
         $linkPreview->addParser($youtubeParserMock);
         $parsers = $linkPreview->getParsers();
-        $this->assertEquals('youtube', key($parsers));
+        self::assertEquals('youtube', key($parsers));
 
         return $linkPreview;
+    }
+
+    public function testGetParsed()
+    {
+        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
+
+        $generalParserMock = $this->getMock('LinkPreview\Parser\GeneralParser');
+        $generalParserMock->expects(self::once())
+            ->method('getLink')
+            ->will(self::returnValue($linkMock));
+        $generalParserMock->expects(self::once())
+            ->method('isValidParser')
+            ->will(self::returnValue(true));
+        $generalParserMock->expects(self::once())
+            ->method('__toString')
+            ->will(self::returnValue('general'));
+        $generalParserMock->expects(self::once())
+            ->method('parseLink')
+            ->will(self::returnValue($linkMock));
+
+        $linkPreview = new LinkPreview();
+        $linkPreview->setPropagation(false);
+        $linkPreview->addParser($generalParserMock);
+        $parsed = $linkPreview->getParsed();
+
+        self::assertArrayHasKey('general', $parsed);
     }
 
     /**
@@ -33,46 +67,19 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
     {
         $linkPreview->removeParser('general');
         $parsers = $linkPreview->getParsers();
-        $this->assertNotContains('general', $parsers);
-    }
-
-    public function testGetParsed()
-    {
-        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
-
-        $generalParserMock = $this->getMock('LinkPreview\Parser\GeneralParser');
-        $generalParserMock->expects($this->once())
-            ->method('getLink')
-            ->will($this->returnValue($linkMock));
-        $generalParserMock->expects($this->once())
-            ->method('isValidParser')
-            ->will($this->returnValue(true));
-        $generalParserMock->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('general'));
-        $generalParserMock->expects($this->once())
-            ->method('parseLink')
-            ->will($this->returnValue($linkMock));
-
-        $linkPreview = new LinkPreview();
-        $linkPreview->setPropagation(false);
-        $linkPreview->addParser($generalParserMock);
-        $parsed = $linkPreview->getParsed();
-
-        $this->assertArrayHasKey('general', $parsed);
-    }
-
-    public function testAddDefaultParsers()
-    {
-        $linkPreview = new LinkPreview();
-        $linkPreview->getParsed();
-
-        $this->assertArrayHasKey('general', $linkPreview->getParsers());
+        self::assertNotContains('general', $parsers);
     }
 
     public function testSetUrl()
     {
         $linkPreview = new LinkPreview('http://github.com');
-        $this->assertEquals('http://github.com', $linkPreview->getUrl());
+        self::assertEquals('http://github.com', $linkPreview->getUrl());
+    }
+
+    public function testYoutube()
+    {
+        $linkPreview = new LinkPreview('https://www.youtube.com/watch?v=C0DPdy98e4c');
+        $parsedLink = current($linkPreview->getParsed());
+        self::assertInstanceOf('LinkPreview\Model\VideoLink', $parsedLink);
     }
 }

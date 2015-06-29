@@ -10,36 +10,36 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
     {
         $responseMock = $this->getMock(
             'Guzzle\Http\Message\Response',
-            array('getBody', 'getContentType', 'getEffectiveUrl'),
-            array(),
+            ['getBody', 'getContentType', 'getEffectiveUrl'],
+            [],
             '',
             false
         );
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('getBody')
-            ->will($this->returnValue('body'));
-        $responseMock->expects($this->once())
+            ->will(self::returnValue('body'));
+        $responseMock->expects(self::once())
             ->method('getContentType')
-            ->will($this->returnValue('text/html'));
-        $responseMock->expects($this->once())
+            ->will(self::returnValue('text/html'));
+        $responseMock->expects(self::once())
             ->method('getEffectiveUrl')
-            ->will($this->returnValue('http://github.com'));
+            ->will(self::returnValue('http://github.com'));
 
         $requestMock = $this->getMock(
             'Guzzle\Http\Message\Request',
-            array('send'),
-            array(),
+            ['send'],
+            [],
             '',
             false
         );
-        $requestMock->expects($this->once())
+        $requestMock->expects(self::once())
             ->method('send')
-            ->will($this->returnValue($responseMock));
+            ->will(self::returnValue($responseMock));
 
         $clientMock = $this->getMock('Guzzle\Http\Client');
-        $clientMock->expects($this->once())
+        $clientMock->expects(self::once())
             ->method('get')
-            ->will($this->returnValue($requestMock));
+            ->will(self::returnValue($requestMock));
 
         $linkMock = $this->getMock('LinkPreview\Model\Link', null);
 
@@ -48,9 +48,8 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
         $reader->setLink($linkMock);
         $link = $reader->readLink();
 
-        $this->assertEquals('body', $link->getContent());
-        $this->assertEquals('text/html', $link->getContentType());
-        $this->assertEquals('http://github.com', $link->getRealUrl());
+        self::assertEquals('body', $link->getContent());
+        self::assertEquals('text/html', $link->getContentType());
+        self::assertEquals('http://github.com', $link->getRealUrl());
     }
 }
- 
