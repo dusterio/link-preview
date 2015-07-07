@@ -59,9 +59,9 @@ general
 
 http://github.com
 https://github.com/
-GitHub Â· Build software better, together.
-GitHub is the best place to build software together. Over 4 million people use GitHub to share code.
-https://github.global.ssl.fastly.net/images/modules/open_graph/github-octocat.png
+GitHub · Build software better, together.
+GitHub is the best place to build software together. Over 10.1 million people use GitHub to share code.
+https://assets-cdn.github.com/images/modules/open_graph/github-octocat.png
 ```
 
 ###Youtube example
