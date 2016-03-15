@@ -69,7 +69,7 @@ class GeneralReader implements ReaderInterface
         $client = $this->getClient();
         $jar = new CookieJar();
 
-        $response = $client->get($link->getUrl(), [
+        $response = $client->request('GET', $link->getUrl(), [
             'allow_redirects' => ['max' => 10],
             'cookies' => $jar,
             'on_stats' => function (TransferStats $stats) use (&$link) {

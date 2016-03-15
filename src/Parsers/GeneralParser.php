@@ -152,7 +152,7 @@ class GeneralParser implements ParserInterface
 
             $link->setTitle($htmlData['title'])
                 ->setDescription($htmlData['description'])
-                ->setDefaultImage($htmlData['cover'])
+                ->setDefaultImage(isset($htmlData['cover']) ? $htmlData['cover'] : null)
                 ->setImages($htmlData['images']);
         } elseif (!strncmp($link->getContentType(), 'image/', strlen('image/'))) {
             $link->setDefaultImage($link->getRealUrl());
