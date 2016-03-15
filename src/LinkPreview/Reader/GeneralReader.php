@@ -2,7 +2,8 @@
 
 namespace LinkPreview\Reader;
 
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 use LinkPreview\Model\LinkInterface;
 
 /**
@@ -65,12 +66,12 @@ class GeneralReader implements ReaderInterface
         $link = $this->getLink();
 
         $client = $this->getClient();
-        $client->setBaseUrl($link->getUrl());
-        $response = $client->get()->send();
+        $jar = new CookieJar();
+        $response = $client->request('GET', $link->getUrl(), ['allow_redirects' => ['max' => 10], 'cookies' => $jar]);
 
-        $link->setContent($response->getBody(true))
-            ->setContentType($response->getContentType())
-            ->setRealUrl($response->getEffectiveUrl());
+        $link->setContent($response->getBody())
+            ->setContentType($response->getHeader('Content-Type')[0])
+            ->setRealUrl($link->getUrl());
 
         return $link;
     }
