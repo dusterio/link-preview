@@ -10,6 +10,7 @@ Initially based on [kasp3r/link-preview](https://github.com/kasp3r/link-preview)
 
 * PHP >= 5.4
 * Guzzle >= 6.1
+* Symfony DomCrawler >= 3.0
 
 ## Installation via Composer
 
@@ -24,7 +25,7 @@ Or add it to `composer.json` manually:
 ```json
 {
     "require": {
-        "dusterio/link-preview": "~1.0"
+        "dusterio/link-preview": "~1.2"
     }
 }
 ```

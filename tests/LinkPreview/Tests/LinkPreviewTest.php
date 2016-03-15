@@ -1,14 +1,14 @@
 <?php
 
-namespace LinkPreview\Tests;
+namespace Dusterio\LinkPreview\Tests;
 
-use LinkPreview\LinkPreview;
+use Dusterio\LinkPreview\Client;
 
 class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 {
     public function testAddDefaultParsers()
     {
-        $linkPreview = new LinkPreview();
+        $linkPreview = new Client();
         $linkPreview->getParsed();
 
         self::assertArrayHasKey('general', $linkPreview->getParsers());
@@ -16,10 +16,10 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 
     public function testAddParser()
     {
-        $generalParserMock = $this->getMock('LinkPreview\Parser\GeneralParser', null);
-        $youtubeParserMock = $this->getMock('LinkPreview\Parser\YoutubeParser', null);
+        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\GeneralParser', null);
+        $youtubeParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\YouTubeParser', null);
 
-        $linkPreview = new LinkPreview();
+        $linkPreview = new Client();
 
         // check if parser is added to the list
         $linkPreview->addParser($generalParserMock);
@@ -36,14 +36,14 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParsed()
     {
-        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
 
-        $generalParserMock = $this->getMock('LinkPreview\Parser\GeneralParser');
+        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\GeneralParser');
         $generalParserMock->expects(self::once())
             ->method('getLink')
             ->will(self::returnValue($linkMock));
         $generalParserMock->expects(self::once())
-            ->method('isValidParser')
+            ->method('hasParsableLink')
             ->will(self::returnValue(true));
         $generalParserMock->expects(self::once())
             ->method('__toString')
@@ -52,8 +52,8 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
             ->method('parseLink')
             ->will(self::returnValue($linkMock));
 
-        $linkPreview = new LinkPreview();
-        $linkPreview->setPropagation(false);
+        $linkPreview = new Client();
+        $linkPreview->setSingleMode(false);
         $linkPreview->addParser($generalParserMock);
         $parsed = $linkPreview->getParsed();
 
@@ -63,7 +63,7 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testAddParser
      */
-    public function testRemoveParser(LinkPreview $linkPreview)
+    public function testRemoveParser(Client $linkPreview)
     {
         $linkPreview->removeParser('general');
         $parsers = $linkPreview->getParsers();
@@ -72,14 +72,14 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 
     public function testSetUrl()
     {
-        $linkPreview = new LinkPreview('http://github.com');
+        $linkPreview = new Client('http://github.com');
         self::assertEquals('http://github.com', $linkPreview->getUrl());
     }
 
     public function testYoutube()
     {
-        $linkPreview = new LinkPreview('https://www.youtube.com/watch?v=C0DPdy98e4c');
+        $linkPreview = new Client('https://www.youtube.com/watch?v=C0DPdy98e4c');
         $parsedLink = current($linkPreview->getParsed());
-        self::assertInstanceOf('LinkPreview\Model\VideoLink', $parsedLink);
+        self::assertInstanceOf('Dusterio\LinkPreview\Models\VideoLink', $parsedLink);
     }
 }

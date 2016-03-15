@@ -1,10 +1,10 @@
 <?php
 
-namespace Dusterio\LinkPreview\Reader;
+namespace Dusterio\LinkPreview\Readers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use Dusterio\LinkPreview\Model\LinkInterface;
+use Dusterio\LinkPreview\Models\LinkInterface;
 
 /**
  * Class GeneralReader

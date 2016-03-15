@@ -1,16 +1,16 @@
 <?php
 
-namespace Dusterio\LinkPreview\Parser;
+namespace Dusterio\LinkPreview\Parsers;
 
-use Dusterio\LinkPreview\Model\LinkInterface;
-use Dusterio\LinkPreview\Model\VideoLink;
-use Dusterio\LinkPreview\Reader\GeneralReader;
-use Dusterio\LinkPreview\Reader\ReaderInterface;
+use Dusterio\LinkPreview\Models\LinkInterface;
+use Dusterio\LinkPreview\Models\VideoLink;
+use Dusterio\LinkPreview\Readers\GeneralReader;
+use Dusterio\LinkPreview\Readers\ReaderInterface;
 
 /**
- * Class YoutubeParser
+ * Class YouTubeParser
  */
-class YoutubeParser implements ParserInterface
+class YouTubeParser implements ParserInterface
 {
     /**
      * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex
@@ -94,7 +94,7 @@ class YoutubeParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function isValidParser()
+    public function hasParsableLink()
     {
         $isValid = false;
 
@@ -120,7 +120,8 @@ class YoutubeParser implements ParserInterface
 
         $link->setTitle($htmlData['title'])
             ->setDescription($htmlData['description'])
-            ->setImage($htmlData['image'])
+            ->setDefaultImage($htmlData['image'])
+            ->setImages([$htmlData['image']])
             ->setEmbedCode(
                 '<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'.$link->getVideoId().'" frameborder="0"/>'
             );

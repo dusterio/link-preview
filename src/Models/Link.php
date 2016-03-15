@@ -1,6 +1,6 @@
 <?php
 
-namespace Dusterio\LinkPreview\Model;
+namespace Dusterio\LinkPreview\Models;
 
 /**
  * Class Link
@@ -11,26 +11,37 @@ class Link implements LinkInterface
      * @var string $content Website content
      */
     private $content;
+
     /**
      * @var string $contentType Website content type
      */
     private $contentType;
+
     /**
      * @var string $description Link description
      */
     private $description;
+
     /**
      * @var string $image Url to image
      */
-    private $image;
+    private $defaultImage;
+
+    /**
+     * @var array
+     */
+    private $images = [];
+
     /**
      * @var string $realUrl
      */
     private $realUrl;
+
     /**
      * @var string $title Link title
      */
     private $title;
+
     /**
      * @var string $url
      */
@@ -51,7 +62,7 @@ class Link implements LinkInterface
      */
     public function getContent()
     {
-        return $this->content;
+        return (string)$this->content;
     }
 
     /**
@@ -103,17 +114,36 @@ class Link implements LinkInterface
     /**
      * @inheritdoc
      */
-    public function getImage()
+    public function getImages()
     {
-        return $this->image;
+        return $this->images;
     }
 
     /**
      * @inheritdoc
      */
-    public function setImage($image)
+    public function setImages(array $images)
     {
-        $this->image = $image;
+        $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultImage()
+    {
+        return $this->defaultImage;
+    }
+
+    /**
+     * @param $image
+     * @return $this
+     */
+    public function setDefaultImage($image)
+    {
+        $this->defaultImage = $image;
 
         return $this;
     }

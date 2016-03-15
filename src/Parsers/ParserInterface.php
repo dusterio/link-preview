@@ -1,9 +1,9 @@
 <?php
 
-namespace Dusterio\LinkPreview\Parser;
+namespace Dusterio\LinkPreview\Parsers;
 
-use Dusterio\LinkPreview\Model\LinkInterface;
-use Dusterio\LinkPreview\Reader\ReaderInterface;
+use Dusterio\LinkPreview\Models\LinkInterface;
+use Dusterio\LinkPreview\Readers\ReaderInterface;
 
 /**
  * Interface ParserInterface
@@ -18,7 +18,7 @@ interface ParserInterface
     public function __construct(ReaderInterface $reader = null, LinkInterface $link = null);
 
     /**
-     * Parser name
+     * Parsers name
      * @return string
      */
     public function __toString();
@@ -39,7 +39,7 @@ interface ParserInterface
      * Check if parser is valid to parse for a given link
      * @return boolean
      */
-    public function isValidParser();
+    public function hasParsableLink();
 
     /**
      * Parse link

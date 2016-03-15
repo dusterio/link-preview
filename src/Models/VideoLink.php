@@ -1,6 +1,6 @@
 <?php
 
-namespace Dusterio\LinkPreview\Model;
+namespace Dusterio\LinkPreview\Models;
 
 /**
  * Class VideoLink

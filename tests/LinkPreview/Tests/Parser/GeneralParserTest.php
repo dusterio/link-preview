@@ -1,8 +1,8 @@
 <?php
 
-namespace LinkPreview\Tests\Parser;
+namespace Dusterio\LinkPreview\Tests\Parser;
 
-use LinkPreview\Parser\GeneralParser;
+use Dusterio\LinkPreview\Parsers\GeneralParser;
 
 class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,13 +11,13 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
      * @param string $url
      * @param bool $expectedResult
      */
-    public function testIsValidParser($url, $expectedResult)
+    public function testHasParsableLink($url, $expectedResult)
     {
-        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
 
         $parser = new GeneralParser();
         $parser->setLink($linkMock->setUrl($url));
-        self::assertEquals($parser->isValidParser(), $expectedResult);
+        self::assertEquals($parser->hasParsableLink(), $expectedResult);
     }
 
     /**
@@ -27,7 +27,7 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['http://github.com', true],
-            ['http://trololo', false],
+            ['http:/trololo', false],
             ['github.com', false]
         ];
     }

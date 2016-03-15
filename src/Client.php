@@ -2,41 +2,41 @@
 
 namespace Dusterio\LinkPreview;
 
-use Dusterio\LinkPreview\Model\LinkInterface;
-use Dusterio\LinkPreview\Parser\GeneralParser;
-use Dusterio\LinkPreview\Parser\ParserInterface;
-use Dusterio\LinkPreview\Parser\YoutubeParser;
+use Dusterio\LinkPreview\Models\LinkInterface;
+use Dusterio\LinkPreview\Parsers\GeneralParser;
+use Dusterio\LinkPreview\Parsers\ParserInterface;
+use Dusterio\LinkPreview\Parsers\YouTubeParser;
 
-/**
- * Class LinkPreview
- */
-class LinkPreview
+class Client
 {
     /**
      * @var ParserInterface[]
      */
     private $parsers = [];
+
     /**
+     * In single mode a link will only be parsed with the first parser that found it feasible
+     *
      * @var boolean
      */
-    private $propagation = false;
+    private $singleMode = true;
+
     /**
      * @var string $url
      */
     private $url;
 
     /**
-     * @param string $url
+     * @param string $url Request address
      */
     public function __construct($url = null)
     {
-        if (null !== $url) {
-            $this->setUrl($url);
-        }
+        if ($url) $this->setUrl($url);
     }
 
     /**
      * Add parser to the beginning of parsers list
+     *
      * @param ParserInterface $parser
      * @return $this
      */
@@ -56,6 +56,7 @@ class LinkPreview
         $parsed = [];
 
         $parsers = $this->getParsers();
+
         if (0 === count($parsers)) {
             $this->addDefaultParsers();
         }
@@ -63,12 +64,10 @@ class LinkPreview
         foreach ($this->getParsers() as $name => $parser) {
             $parser->getLink()->setUrl($this->getUrl());
 
-            if ($parser->isValidParser()) {
+            if ($parser->hasParsableLink()) {
                 $parsed[$name] = $parser->parseLink();
 
-                if (!$this->getPropagation()) {
-                    break;
-                }
+                if ($this->isSingleMode()) break;
             }
         }
 
@@ -97,24 +96,24 @@ class LinkPreview
     }
 
     /**
-     * Get propagation
+     * Are we in a single mode?
+     *
      * @return boolean
      */
-    public function getPropagation()
+    public function isSingleMode()
     {
-        return $this->propagation;
+        return $this->singleMode;
     }
 
     /**
-     * Set propagation for parsing.
-     * If propagation is set to false, then parsing stops after first successful parsing.
-     * By default it is set as false.
-     * @param boolean $propagation
+     * Set single mode on/off
+     *
+     * @param boolean $mode
      * @return $this
      */
-    public function setPropagation($propagation)
+    public function setSingleMode($mode)
     {
-        $this->propagation = $propagation;
+        $this->singleMode = $mode;
 
         return $this;
     }
@@ -128,8 +127,9 @@ class LinkPreview
     }
 
     /**
-     * Set website url to a general model
-     * @param string $url Website url to parse information from
+     * Set target url
+     *
+     * @param string $url Website url to parse
      * @return $this
      */
     public function setUrl($url)
@@ -141,6 +141,7 @@ class LinkPreview
 
     /**
      * Remove parser from parsers list
+     *
      * @param string $name Parser name
      * @return $this
      */
@@ -159,6 +160,6 @@ class LinkPreview
     protected function addDefaultParsers()
     {
         $this->addParser(new GeneralParser());
-        $this->addParser(new YoutubeParser());
+        $this->addParser(new YouTubeParser());
     }
 }

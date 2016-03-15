@@ -1,6 +1,6 @@
 <?php
 
-namespace Dusterio\LinkPreview\Model;
+namespace Dusterio\LinkPreview\Models;
 
 /**
  * Interface LinkInterface
@@ -27,9 +27,15 @@ interface LinkInterface
 
     /**
      * Get image url
-     * @return string
+     * @return array
      */
-    public function getImage();
+    public function getImages();
+
+    /**
+     * Link cover
+     * @return string|boolean
+     */
+    public function getDefaultImage();
 
     /**
      * Get real url after all redirects
@@ -72,10 +78,17 @@ interface LinkInterface
 
     /**
      * Set image url
-     * @param string $image
+     * @param array $images
      * @return $this
      */
-    public function setImage($image);
+    public function setImages(array $images);
+
+    /**
+     * Image cover
+     * @param $image
+     * @return $this
+     */
+    public function setDefaultImage($image);
 
     /**
      * Set real url after all redirects

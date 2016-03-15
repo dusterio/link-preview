@@ -1,47 +1,55 @@
 <?php
 
-namespace LinkPreview\Tests\Reader;
+namespace Dusterio\LinkPreview\Tests\Reader;
 
-use LinkPreview\Reader\GeneralReader;
+use Dusterio\LinkPreview\Readers\GeneralReader;
 
 class GeneralReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testReadLink()
     {
         $responseMock = $this->getMock(
-            'Guzzle\Http\Message\Response',
-            ['getBody', 'getContentType', 'getEffectiveUrl'],
+            'Psr\Http\Message\ResponseInterface',
+            ['getBody', 'getContentType', 'getEffectiveUrl', 'getStatusCode', 'withStatus', 'getReasonPhrase',
+            'getProtocolVersion', 'withProtocolVersion', 'getHeader', 'getHeaders', 'hasHeader', 'withHeader',
+            'getHeaderLine', 'withAddedHeader', 'withoutHeader', 'withBody'],
             [],
             '',
             false
         );
+
         $responseMock->expects(self::once())
             ->method('getBody')
             ->will(self::returnValue('body'));
+
         $responseMock->expects(self::once())
             ->method('getContentType')
             ->will(self::returnValue('text/html'));
+
         $responseMock->expects(self::once())
             ->method('getEffectiveUrl')
             ->will(self::returnValue('http://github.com'));
 
         $requestMock = $this->getMock(
-            'Guzzle\Http\Message\Request',
-            ['send'],
+            'Psr\Http\Message\RequestInterface',
+            ['send', 'getRequestTarget', 'withRequestTarget', 'getMethod', 'withMethod', 'getUri', 'getProtocolVersion',
+            'withProtocolVersion', 'getHeaders', 'hasHeader', 'getHeaderLine', 'getHeader', 'withHeader', 'withUri',
+            'withAddedHeader', 'withoutHeader', 'getBody', 'withBody'],
             [],
             '',
             false
         );
+
         $requestMock->expects(self::once())
             ->method('send')
             ->will(self::returnValue($responseMock));
 
-        $clientMock = $this->getMock('Guzzle\Http\Client');
+        $clientMock = $this->getMock('GuzzleHttp\Client');
         $clientMock->expects(self::once())
-            ->method('get')
+            ->method('request')
             ->will(self::returnValue($requestMock));
 
-        $linkMock = $this->getMock('LinkPreview\Model\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
 
         $reader = new GeneralReader();
         $reader->setClient($clientMock);
