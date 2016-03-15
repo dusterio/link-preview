@@ -40,7 +40,7 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
 
             false
         );
-        
+
         $clientMock = $this->getMock('GuzzleHttp\Client');
         $clientMock->expects(self::once())
             ->method('request')
