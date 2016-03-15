@@ -33,9 +33,9 @@ Or add it to `composer.json` manually:
 ## Usage
 
 ```php
-use LinkPreview\LinkPreview;
+use Dusterio\LinkPreview\Client;
 
-$linkPreview = new LinkPreview('http://github.com');
+$linkPreview = new Client('https://github.com');
 $parsed = $linkPreview->getParsed();
 foreach ($parsed as $parserName => $link) {
     echo $parserName . PHP_EOL . PHP_EOL;
@@ -64,8 +64,8 @@ https://assets-cdn.github.com/images/modules/open_graph/github-octocat.png
 ###Youtube example
 
 ```php
-use LinkPreview\LinkPreview;
-use LinkPreview\Model\VideoLink;
+use Dusterio\LinkPreview\LinkPreview;
+use Dusterio\LinkPreview\Models\VideoLink;
 
 $linkPreview = new LinkPreview('https://www.youtube.com/watch?v=8ZcmTl_1ER8');
 $parsed = $linkPreview->getParsed();
@@ -102,7 +102,7 @@ http://i1.ytimg.com/vi/8ZcmTl_1ER8/hqdefault.jpg
 ```
 
 ## Todo
-1. Add more unit tests
+1. Add more unit and integration tests
 2. Update documentation
 3. Add more parsers
 
