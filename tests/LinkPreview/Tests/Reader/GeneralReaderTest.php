@@ -37,6 +37,7 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
             'withAddedHeader', 'withoutHeader', 'getBody', 'withBody'],
             [],
             '',
+
             false
         );
 
@@ -47,7 +48,7 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
         $clientMock = $this->getMock('GuzzleHttp\Client');
         $clientMock->expects(self::once())
             ->method('request')
-            ->will(self::returnValue($requestMock));
+            ->will(self::returnValue($responseMock));
 
         $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
 
