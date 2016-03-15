@@ -1,8 +1,8 @@
 <?php
 
-namespace LinkPreview\Reader;
+namespace Dusterio\LinkPreview\Reader;
 
-use LinkPreview\Model\LinkInterface;
+use Dusterio\LinkPreview\Model\LinkInterface;
 
 /**
  * Interface ReaderInterface

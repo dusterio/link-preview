@@ -1,11 +1,11 @@
 <?php
 
-namespace LinkPreview\Parser;
+namespace Dusterio\LinkPreview\Parser;
 
-use LinkPreview\Model\Link;
-use LinkPreview\Model\LinkInterface;
-use LinkPreview\Reader\GeneralReader;
-use LinkPreview\Reader\ReaderInterface;
+use Dusterio\LinkPreview\Model\Link;
+use Dusterio\LinkPreview\Model\LinkInterface;
+use Dusterio\LinkPreview\Reader\GeneralReader;
+use Dusterio\LinkPreview\Reader\ReaderInterface;
 
 /**
  * Class GeneralParser

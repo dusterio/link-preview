@@ -1,11 +1,11 @@
 <?php
 
-namespace LinkPreview;
+namespace Dusterio\LinkPreview;
 
-use LinkPreview\Model\LinkInterface;
-use LinkPreview\Parser\GeneralParser;
-use LinkPreview\Parser\ParserInterface;
-use LinkPreview\Parser\YoutubeParser;
+use Dusterio\LinkPreview\Model\LinkInterface;
+use Dusterio\LinkPreview\Parser\GeneralParser;
+use Dusterio\LinkPreview\Parser\ParserInterface;
+use Dusterio\LinkPreview\Parser\YoutubeParser;
 
 /**
  * Class LinkPreview

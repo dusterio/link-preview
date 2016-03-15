@@ -1,6 +1,6 @@
 <?php
 
-namespace LinkPreview\Model;
+namespace Dusterio\LinkPreview\Model;
 
 /**
  * Class Link
