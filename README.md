@@ -37,6 +37,7 @@ use Dusterio\LinkPreview\Client;
 
 $linkPreview = new Client('https://github.com');
 $parsed = $linkPreview->getParsed();
+
 foreach ($parsed as $parserName => $link) {
     echo $parserName . PHP_EOL . PHP_EOL;
 
@@ -44,7 +45,10 @@ foreach ($parsed as $parserName => $link) {
     echo $link->getRealUrl() . PHP_EOL;
     echo $link->getTitle() . PHP_EOL;
     echo $link->getDescription() . PHP_EOL;
-    echo $link->getImage() . PHP_EOL;
+    echo $link->getDefaultImage() . PHP_EOL;
+
+    // All images found in the content
+    var_dump($link->getImages());
 }
 ```
 
