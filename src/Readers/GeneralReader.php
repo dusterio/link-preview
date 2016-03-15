@@ -71,7 +71,7 @@ class GeneralReader implements ReaderInterface
 
         $link->setContent($response->getBody())
             ->setContentType($response->getHeader('Content-Type')[0])
-            ->setRealUrl($response->getUrl());
+            ->setRealUrl($response->getEffectiveUrl());
 
         return $link;
     }

@@ -1,5 +1,5 @@
-LinkPreview [![Build Status](https://secure.travis-ci.org/kasp3r/link-preview.png)](http://travis-ci.org/kasp3r/link-preview)
-===========
+LinkPreview [![Build Status](https://secure.travis-ci.org/dusterio/link-preview.png)](http://travis-ci.org/dusterio/link-preview)
+=================================================================================================================================
 
 A PHP class that consumes an HTTP/HTTPS link and returns an array of preview information. Think of Facebook sharing -
 whenever you paste a link, it goes to specified page and fetches some details.

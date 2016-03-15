@@ -27,7 +27,7 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
             ->will(self::returnValue(['text/html']));
 
         $responseMock->expects(self::once())
-            ->method('getUrl')
+            ->method('getEffectiveUrl')
             ->will(self::returnValue('http://github.com'));
 
         $requestMock = $this->getMock(
