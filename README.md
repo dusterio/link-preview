@@ -1,10 +1,16 @@
-LinkPreview [![Build Status](https://secure.travis-ci.org/dusterio/link-preview.png)](http://travis-ci.org/dusterio/link-preview)
-=================================================================================================================================
+# Link Preview 
+[![Build Status](https://travis-ci.org/dusterio/link-preview.svg)](https://travis-ci.org/dusterio/link-preview)
+[![Total Downloads](https://poser.pugx.org/dusterio/link-preview/d/total.svg)](https://packagist.org/packages/dusterio/link-preview)
+[![Latest Stable Version](https://poser.pugx.org/dusterio/link-preview/v/stable.svg)](https://packagist.org/packages/dusterio/link-preview)
+[![Latest Unstable Version](https://poser.pugx.org/dusterio/link-preview/v/unstable.svg)](https://packagist.org/packages/dusterio/link-preview)
+[![License](https://poser.pugx.org/dusterio/link-preview/license.svg)](https://packagist.org/packages/dusterio/link-preview)
 
-A PHP class that consumes an HTTP/HTTPS link and returns an array of preview information. Think of Facebook sharing -
+A PHP class that consumes an HTTP(S) link and returns an array of preview information. Think of Facebook sharing -
 whenever you paste a link, it goes to specified page and fetches some details.
 
 Initially based on [kasp3r/link-preview](https://github.com/kasp3r/link-preview) that seems to be abandoned.
+
+Includes integrations with: Laravel 5
 
 ## Dependencies
 
@@ -65,7 +71,7 @@ GitHub is the best place to build software together. Over 10.1 million people us
 https://assets-cdn.github.com/images/modules/open_graph/github-octocat.png
 ```
 
-###Youtube example
+### Youtube example
 
 ```php
 use Dusterio\LinkPreview\LinkPreview;
@@ -88,7 +94,6 @@ foreach ($parsed as $parserName => $link) {
 }
 ```
 
-
 **Output**
 
 ```
@@ -106,6 +111,7 @@ http://i1.ytimg.com/vi/8ZcmTl_1ER8/hqdefault.jpg
 ```
 
 ## Todo
+
 1. Add more unit and integration tests
 2. Update documentation
 3. Add more parsers
