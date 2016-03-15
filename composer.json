@@ -1,27 +1,29 @@
 {
-    "name": "kasp3r/link-preview",
+    "name": "dusterio/link-preview",
     "type": "library",
-    "description": "Link preview library for PHP",
+    "description": "Link preview for PHP with Laravel provider",
     "keywords": ["php","url","scraping"],
-    "homepage": "http://github.com/kasp3r/link-preview",
+    "homepage": "http://github.com/dusterio/link-preview",
     "license": "MIT",
     "authors": [
         {
-            "name": "Tadas Juozapaitis",
-            "email": "kasp3rito@gmail.com",
-            "homepage": "http://jugbit.com"
+            "name": "Denis Mysenko",
+            "email": "denis@mysenko.com",
+            "homepage": "https://www.mysenko.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.0",
-        "guzzle/guzzle": "~3.8"
+        "guzzle/guzzle": "~3.8",
+        "illuminate/support": "5.*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": {
-            "LinkPreview": "src/"
+        "psr-4": {
+            "Dusterio\\LinkPreview\\": "src/"
         }
     }
 }

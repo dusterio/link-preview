@@ -1,12 +1,13 @@
 LinkPreview [![Build Status](https://secure.travis-ci.org/kasp3r/link-preview.png)](http://travis-ci.org/kasp3r/link-preview)
 ===========
 
-A PHP library to easily get website information (title, description, image...) from given url.
+A PHP class that consumes an HTTP/HTTPS link and returns an array of preview information. Think of Facebook sharing -
+whenever you paste a link, it goes to specified page and fetches some details.
 
 ## Dependencies
 
 * PHP >= 5.4
-* Guzzle
+* Guzzle >= 6.1
 
 ## Installation
 
@@ -21,17 +22,6 @@ To install LinkPreview with composer you need to create `composer.json` in your 
     }
 }
 ```
-
-Then run
-
-```bash
-$ wget -nc http://getcomposer.org/composer.phar
-$ php composer.phar install
-```
-
-Library will be installed in vendor/kasp3r/link-preview
-
-In your project include composer autoload file from vendor/autoload.php
 
 ## Usage
 
