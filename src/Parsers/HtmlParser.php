@@ -139,6 +139,9 @@ class HtmlParser extends BaseParser implements ParserInterface
 
             // Parse all images on this page
             foreach($parser->filter('img') as $image) {
+                if (!$image->hasAttribute('src')) continue;
+                if (filter_var($image->getAttribute('src'), FILTER_VALIDATE_URL) === false) continue;
+
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
                 if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
