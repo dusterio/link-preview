@@ -14,7 +14,7 @@ Includes integrations with: Laravel 5
 
 ## Dependencies
 
-* PHP >= 5.4
+* PHP >= 5.5
 * Guzzle >= 6.1
 * Symfony DomCrawler >= 3.0
 
