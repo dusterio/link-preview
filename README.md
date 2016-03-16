@@ -41,73 +41,61 @@ Or add it to `composer.json` manually:
 ```php
 use Dusterio\LinkPreview\Client;
 
-$linkPreview = new Client('https://github.com');
-$parsed = $linkPreview->getParsed();
+$previewClient = new Client('https://www.boogiecall.com/en/Melbourne');
 
-foreach ($parsed as $parserName => $link) {
-    echo $parserName . PHP_EOL . PHP_EOL;
+// Get previews from all available parsers
+$previews = $previewClient->getPreviews();
 
-    echo $link->getUrl() . PHP_EOL;
-    echo $link->getRealUrl() . PHP_EOL;
-    echo $link->getTitle() . PHP_EOL;
-    echo $link->getDescription() . PHP_EOL;
-    echo $link->getDefaultImage() . PHP_EOL;
+// Get a preview from specific parser
+$preview = $previewClient->getPreview('general');
 
-    // All images found in the content
-    var_dump($link->getImages());
-}
+// Convert output to array
+$preview = $preview->toArray();
 ```
 
 
 **Output**
 
 ```
-general
-
-http://github.com
-https://github.com/
-GitHub · Build software better, together.
-GitHub is the best place to build software together. Over 10.1 million people use GitHub to share code.
-https://assets-cdn.github.com/images/modules/open_graph/github-octocat.png
+array(4) {
+  ["cover"]=>
+  string(94) "https://cdn.boogiecall.com/media/images/872398e3d9598c494a2bed72268bf018_1440575488_7314_s.jpg"
+  ["images"]=>
+  array(8) {
+    [0]=>
+    string(94) "https://cdn.boogiecall.com/media/images/872398e3d9598c494a2bed72268bf018_1440575488_7314_s.jpg"
+    [1]=>
+    string(94) "https://cdn.boogiecall.com/media/images/b18970cd4c808f4dcdf7c319779ab9c6_1457347623_2419_s.jpg"
+  }
+  ["title"]=>
+  string(44) "Events, parties & live concerts in Melbourne"
+  ["description"]=>
+  string(107) "List of events in Melbourne. Nightlife, best parties and concerts in Melbourne, event listings and reviews."
+}
 ```
 
-### Youtube example
+### YouTube example
 
 ```php
-use Dusterio\LinkPreview\LinkPreview;
-use Dusterio\LinkPreview\Models\VideoLink;
+use Dusterio\LinkPreview\Client;
 
-$linkPreview = new LinkPreview('https://www.youtube.com/watch?v=8ZcmTl_1ER8');
-$parsed = $linkPreview->getParsed();
-foreach ($parsed as $parserName => $link) {
-    echo $parserName . PHP_EOL . PHP_EOL;
+$previewClient = new LinkPreview('https://www.youtube.com/watch?v=v1uKhwN6FtA');
 
-    echo $link->getUrl() . PHP_EOL;
-    echo $link->getRealUrl() . PHP_EOL;
-    echo $link->getTitle() . PHP_EOL;
-    echo $link->getDescription() . PHP_EOL;
-    echo $link->getImage() . PHP_EOL;
-    if ($link instanceof VideoLink) {
-        echo $link->getVideoId() . PHP_EOL;
-        echo $link->getEmbedCode() . PHP_EOL;
-    }
-}
+// Only parse YouTube specific information
+$preview = $previewClient->getPreview('youtube');
+
+var_dump($preview->toArray());
 ```
 
 **Output**
 
 ```
-youtube
-
-https://www.youtube.com/watch?v=8ZcmTl_1ER8
-http://gdata.youtube.com/feeds/api/videos/8ZcmTl_1ER8?v=2&alt=jsonc
-Epic sax guy 10 hours
-I had to remove my original one so I reuploaded this with much better quality.
-(If you want it sound like previous one, try setting quality to 240p)
-Yeah, I know that video sucks compared to original but no can do :(
-http://i1.ytimg.com/vi/8ZcmTl_1ER8/hqdefault.jpg
-8ZcmTl_1ER8
-<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/8ZcmTl_1ER8" frameborder="0"/>
+array(2) {
+  ["embed"]=>
+  string(128) "<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/v1uKhwN6FtA" frameborder="0"/>"
+  ["id"]=>
+  string(11) "v1uKhwN6FtA"
+}
 ```
 
 ## Todo
