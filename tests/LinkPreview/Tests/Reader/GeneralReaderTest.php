@@ -2,11 +2,14 @@
 
 namespace Dusterio\LinkPreview\Tests\Reader;
 
-use Dusterio\LinkPreview\Readers\GeneralReader;
+use Dusterio\LinkPreview\Readers\HttpReader;
 
 class GeneralReaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testReadLink()
+    /**
+     * @test
+     */
+    public function can_load_a_web_page()
     {
         $responseMock = $this->getMock(
             'Psr\Http\Message\ResponseInterface',
@@ -46,15 +49,14 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
             ->method('request')
             ->will(self::returnValue($responseMock));
 
-        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null, ['http://www.google.com']);
 
-        $reader = new GeneralReader();
+        $reader = new HttpReader();
         $reader->setClient($clientMock);
-        $reader->setLink($linkMock);
-        $link = $reader->readLink();
+        $link = $reader->readLink($linkMock);
 
         self::assertEquals('body', $link->getContent());
         self::assertEquals('text/html', $link->getContentType());
-        /*self::assertEquals('http://github.com', $link->getRealUrl());*/
+        self::assertEquals('http://www.google.com', $link->getUrl());
     }
 }

@@ -2,24 +2,21 @@
 
 namespace Dusterio\LinkPreview\Readers;
 
+use Dusterio\LinkPreview\Contracts\LinkInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use Dusterio\LinkPreview\Models\LinkInterface;
 use GuzzleHttp\TransferStats;
 
 /**
- * Class GeneralReader
+ * Class HttpReader
  */
-class GeneralReader implements ReaderInterface
+class HttpReader implements ReaderInterface
 {
     /**
      * @var Client $client
      */
     private $client;
-    /**
-     * @inheritdoc
-     */
-    private $link;
 
     /**
      * @return Client
@@ -44,28 +41,8 @@ class GeneralReader implements ReaderInterface
     /**
      * @inheritdoc
      */
-    public function getLink()
+    public function readLink(LinkInterface $link)
     {
-        return $this->link;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setLink(LinkInterface $link)
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function readLink()
-    {
-        $link = $this->getLink();
-
         $client = $this->getClient();
         $jar = new CookieJar();
 
@@ -73,7 +50,7 @@ class GeneralReader implements ReaderInterface
             'allow_redirects' => ['max' => 10],
             'cookies' => $jar,
             'on_stats' => function (TransferStats $stats) use (&$link) {
-                $link->setRealUrl($stats->getEffectiveUri());
+                $link->setEffectiveUrl($stats->getEffectiveUri());
             }
         ]);
 

@@ -2,27 +2,20 @@
 
 namespace Dusterio\LinkPreview\Parsers;
 
+use Dusterio\LinkPreview\Contracts\LinkInterface;
+use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
+use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Models\Link;
-use Dusterio\LinkPreview\Models\LinkInterface;
-use Dusterio\LinkPreview\Readers\GeneralReader;
-use Dusterio\LinkPreview\Readers\ReaderInterface;
+use Dusterio\LinkPreview\Readers\HttpReader;
+use Dusterio\LinkPreview\Models\HtmlPreview;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Class GeneralParser
+ * Class HtmlParser
  */
-class GeneralParser implements ParserInterface
+class HtmlParser extends BaseParser implements ParserInterface
 {
-    /**
-     * @var LinkInterface $link
-     */
-    private $link;
-
-    /**
-     * @var ReaderInterface $reader
-     */
-    private $reader;
-
     /**
      * Supported HTML tags
      *
@@ -58,21 +51,12 @@ class GeneralParser implements ParserInterface
 
     /**
      * @param ReaderInterface $reader
-     * @param LinkInterface   $link
+     * @param PreviewInterface $preview
      */
-    public function __construct(ReaderInterface $reader = null, LinkInterface $link = null)
+    public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
     {
-        if (null !== $reader) {
-            $this->setReader($reader);
-        } else {
-            $this->setReader(new GeneralReader());
-        }
-
-        if (null !== $link) {
-            $this->setLink($link);
-        } else {
-            $this->setLink(new Link());
-        }
+        $this->setReader($reader ?: new HttpReader());
+        $this->setPreview($preview ?: new HtmlPreview());
     }
 
     /**
@@ -83,13 +67,6 @@ class GeneralParser implements ParserInterface
         return 'general';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
 
     /**
      * @param int $width
@@ -104,66 +81,35 @@ class GeneralParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function setLink(LinkInterface $link)
+    public function canParseLink(LinkInterface $link)
     {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @return ReaderInterface
-     */
-    public function getReader()
-    {
-        return $this->reader;
-    }
-
-    /**
-     * @param ReaderInterface $reader
-     * @return $this
-     */
-    public function setReader(ReaderInterface $reader)
-    {
-        $this->reader = $reader;
-
-        return $this;
+        return !filter_var($link->getUrl(), FILTER_VALIDATE_URL) === false;
     }
 
     /**
      * @inheritdoc
      */
-    public function hasParsableLink()
+    public function parseLink(LinkInterface $link)
     {
-        return !filter_var($this->getLink()->getUrl(), FILTER_VALIDATE_URL) === false;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function parseLink()
-    {
-        $this->readLink();
-
-        $link = $this->getLink();
+        $link = $this->readLink($link);
 
         if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
             $htmlData = $this->parseHtml($link->getContent());
 
-            $link->setTitle($htmlData['title'])
+            $this->getPreview()->setTitle($htmlData['title'])
                 ->setDescription($htmlData['description'])
-                ->setDefaultImage(isset($htmlData['cover']) ? $htmlData['cover'] : null)
+                ->setCover($htmlData['cover'])
                 ->setImages($htmlData['images']);
         } elseif (!strncmp($link->getContentType(), 'image/', strlen('image/'))) {
-            $link->setDefaultImage($link->getRealUrl());
+            $this->getPreview()->setCover($link->getEffectiveUrl());
         }
 
-        return $link;
+        return $this;
     }
 
     /**
      * Extract required data from html source
-     * @param $html
+     * @param string $html
      * @return array
      */
     protected function parseHtml($html)
@@ -186,8 +132,12 @@ class GeneralParser implements ParserInterface
                         break;
                     }
                 }
+
+                // Default is empty string
+                if (!isset(${$tag})) ${$tag} = '';
             }
 
+            // Parse all images on this page
             foreach($parser->filter('img') as $image) {
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
@@ -204,14 +154,5 @@ class GeneralParser implements ParserInterface
         if (!isset($cover) && count($images)) $cover = $images[0];
 
         return compact('cover', 'title', 'description', 'images');
-    }
-
-    /**
-     * Read link
-     */
-    private function readLink()
-    {
-        $reader = $this->getReader()->setLink($this->getLink());
-        $this->setLink($reader->readLink());
     }
 }

@@ -2,15 +2,17 @@
 
 namespace Dusterio\LinkPreview\Parsers;
 
-use Dusterio\LinkPreview\Models\LinkInterface;
-use Dusterio\LinkPreview\Models\VideoLink;
-use Dusterio\LinkPreview\Readers\GeneralReader;
-use Dusterio\LinkPreview\Readers\ReaderInterface;
+use Dusterio\LinkPreview\Contracts\LinkInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
+use Dusterio\LinkPreview\Contracts\ParserInterface;
+use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Models\VideoPreview;
+use Dusterio\LinkPreview\Readers\HttpReader;
 
 /**
  * Class YouTubeParser
  */
-class YouTubeParser implements ParserInterface
+class YouTubeParser extends BaseParser implements ParserInterface
 {
     /**
      * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex
@@ -18,32 +20,13 @@ class YouTubeParser implements ParserInterface
     const PATTERN = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
 
     /**
-     * @var VideoLink $link
-     */
-    private $link;
-
-    /**
-     * @var ReaderInterface $reader
-     */
-    private $reader;
-
-    /**
      * @param ReaderInterface $reader
-     * @param LinkInterface   $link
+     * @param PreviewInterface $preview
      */
-    public function __construct(ReaderInterface $reader = null, LinkInterface $link = null)
+    public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
     {
-        if (null !== $reader) {
-            $this->setReader($reader);
-        } else {
-            $this->setReader(new GeneralReader());
-        }
-
-        if (null !== $link) {
-            $this->setLink($link);
-        } else {
-            $this->setLink(new VideoLink());
-        }
+        $this->setReader($reader ?: new HttpReader());
+        $this->setPreview($preview ?: new VideoPreview());
     }
 
     /**
@@ -57,119 +40,24 @@ class YouTubeParser implements ParserInterface
     /**
      * @inheritdoc
      */
-    public function getLink()
+    public function canParseLink(LinkInterface $link)
     {
-        return $this->link;
+        return (preg_match(static::PATTERN, $link->getUrl()));
     }
 
     /**
      * @inheritdoc
      */
-    public function setLink(LinkInterface $link)
+    public function parseLink(LinkInterface $link)
     {
-        $this->link = $link;
+        preg_match(static::PATTERN, $link->getUrl(), $matches);
 
-        return $this;
-    }
-
-    /**
-     * @return ReaderInterface
-     */
-    public function getReader()
-    {
-        return $this->reader;
-    }
-
-    /**
-     * @param ReaderInterface $reader
-     * @return $this
-     */
-    public function setReader(ReaderInterface $reader)
-    {
-        $this->reader = $reader;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasParsableLink()
-    {
-        $isValid = false;
-
-        $link = $this->getLink();
-        $url = $link->getUrl();
-
-        if (is_string($url) && preg_match(static::PATTERN, $url, $matches)) {
-            $link->setVideoId($matches[1]);
-            $isValid = true;
-        }
-
-        return $isValid;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function parseLink()
-    {
-        $this->readLink();
-        $link = $this->getLink();
-        $htmlData = $this->parseHtml($link->getContent());
-
-        $link->setTitle($htmlData['title'])
-            ->setDescription($htmlData['description'])
-            ->setDefaultImage($htmlData['image'])
-            ->setImages([$htmlData['image']])
-            ->setEmbedCode(
-                '<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'.$link->getVideoId().'" frameborder="0"/>'
+        $this->getPreview()
+            ->setId($matches[1])
+            ->setEmbed(
+                '<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'.$this->getPreview()->getId().'" frameborder="0"/>'
             );
 
-        return $link;
-    }
-
-    /**
-     * Extract required data from html source
-     * @param $html
-     * @return array
-     */
-    protected function parseHtml($html)
-    {
-        $data = [
-            'image' => '',
-            'title' => '',
-            'description' => ''
-        ];
-
-        libxml_use_internal_errors(true);
-        $doc = new \DOMDocument();
-        $doc->loadHTML($html);
-
-        /** @var \DOMElement $meta */
-        foreach ($doc->getElementsByTagName('meta') as $meta) {
-            if ($meta->getAttribute('property') === 'og:image') {
-                $data['image'] = $meta->getAttribute('content');
-            }
-
-            if ($meta->getAttribute('property') === 'og:title') {
-                $data['title'] = $meta->getAttribute('content');
-            }
-
-            if ($meta->getAttribute('property') === 'og:description') {
-                $data['description'] = $meta->getAttribute('content');
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Read link
-     */
-    private function readLink()
-    {
-        $reader = $this->getReader()->setLink($this->getLink());
-        $this->setLink($reader->readLink());
+        return $this;
     }
 }

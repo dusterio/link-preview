@@ -6,20 +6,26 @@ use Dusterio\LinkPreview\Client;
 
 class LinkPreviewTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAddDefaultParsers()
+    /**
+     * @test
+     */
+    public function default_parsers_are_added_automatically()
     {
-        $linkPreview = new Client();
-        $linkPreview->getParsed();
+        $linkPreview = new Client('http://www.google.com');
+        $linkPreview->getParsers();
 
         self::assertArrayHasKey('general', $linkPreview->getParsers());
     }
 
-    public function testAddParser()
+    /**
+     * @test
+     */
+    public function can_add_extra_parsers()
     {
-        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\GeneralParser', null);
+        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\HtmlParser', null);
         $youtubeParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\YouTubeParser', null);
 
-        $linkPreview = new Client();
+        $linkPreview = new Client('http://www.google.com');
 
         // check if parser is added to the list
         $linkPreview->addParser($generalParserMock);
@@ -34,52 +40,66 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
         return $linkPreview;
     }
 
-    public function testGetParsed()
+    /**
+     * @test
+     */
+    public function can_parse_an_html_page()
     {
-        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null, ['http://www.google.com']);
 
-        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\GeneralParser');
+        $generalParserMock = $this->getMock('Dusterio\LinkPreview\Parsers\HtmlParser');
+        $previewMock = $this->getMock('Dusterio\LinkPreview\Models\HtmlPreview');
+
         $generalParserMock->expects(self::once())
-            ->method('getLink')
-            ->will(self::returnValue($linkMock));
-        $generalParserMock->expects(self::once())
-            ->method('hasParsableLink')
+            ->method('canParseLink')
             ->will(self::returnValue(true));
+
+        /*$generalParserMock->expects(self::once())
+            ->method('getPreview')
+            ->will(self::returnValue($previewMock));*/
+
         $generalParserMock->expects(self::once())
             ->method('__toString')
             ->will(self::returnValue('general'));
+
         $generalParserMock->expects(self::once())
             ->method('parseLink')
-            ->will(self::returnValue($linkMock));
+            ->will(self::returnValue($previewMock));
 
-        $linkPreview = new Client();
-        $linkPreview->setSingleMode(false);
+        $linkPreview = new Client('http://www.google.com');
         $linkPreview->addParser($generalParserMock);
-        $parsed = $linkPreview->getParsed();
+        $parsed = $linkPreview->getPreviews();
 
         self::assertArrayHasKey('general', $parsed);
     }
 
     /**
-     * @depends testAddParser
+     * @depends can_add_extra_parsers
+     * @test
      */
-    public function testRemoveParser(Client $linkPreview)
+    public function can_remove_a_parser(Client $linkPreview)
     {
         $linkPreview->removeParser('general');
         $parsers = $linkPreview->getParsers();
         self::assertNotContains('general', $parsers);
     }
 
-    public function testSetUrl()
+    /**
+     * @test
+     */
+    public function can_set_an_url()
     {
         $linkPreview = new Client('http://github.com');
         self::assertEquals('http://github.com', $linkPreview->getUrl());
     }
 
-    public function testYoutube()
+    /**
+     * @test
+     */
+    public function can_parse_a_youtube_link()
     {
         $linkPreview = new Client('https://www.youtube.com/watch?v=C0DPdy98e4c');
-        $parsedLink = current($linkPreview->getParsed());
-        self::assertInstanceOf('Dusterio\LinkPreview\Models\VideoLink', $parsedLink);
+        $parsedLink = $linkPreview->getPreview('youtube');
+        self::assertInstanceOf('Dusterio\LinkPreview\Models\VideoPreview', $parsedLink);
     }
 }

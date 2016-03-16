@@ -2,10 +2,12 @@
 
 namespace Dusterio\LinkPreview;
 
-use Dusterio\LinkPreview\Models\LinkInterface;
-use Dusterio\LinkPreview\Parsers\GeneralParser;
-use Dusterio\LinkPreview\Parsers\ParserInterface;
+use Dusterio\LinkPreview\Contracts\ParserInterface;
+use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Parsers\HtmlParser;
 use Dusterio\LinkPreview\Parsers\YouTubeParser;
+use Dusterio\LinkPreview\Models\Link;
+use Dusterio\LinkPreview\Exceptions\UnknownParserException;
 
 class Client
 {
@@ -15,23 +17,48 @@ class Client
     private $parsers = [];
 
     /**
-     * In single mode a link will only be parsed with the first parser that found it feasible
-     *
-     * @var boolean
+     * @var Link $link
      */
-    private $singleMode = true;
-
-    /**
-     * @var string $url
-     */
-    private $url;
+    private $link;
 
     /**
      * @param string $url Request address
      */
-    public function __construct($url = null)
+    public function __construct($url)
     {
-        if ($url) $this->setUrl($url);
+        $this->link = new Link($url);
+        $this->addDefaultParsers();
+    }
+
+    /**
+     * Try to get previews from as many parsers as possible
+     * @return PreviewInterface[]
+     */
+    public function getPreviews()
+    {
+        $parsed = [];
+
+        foreach ($this->getParsers() as $name => $parser) {
+            if ($parser->canParseLink($this->link))
+                $parsed[$name] = $parser->parseLink($this->link)->getPreview();
+        }
+
+        return $parsed;
+    }
+
+    /**
+     * Get a preview from a single parser
+     * @param string $parserId
+     * @throws UnknownParserException
+     * @return PreviewInterface|boolean
+     */
+    public function getPreview($parserId)
+    {
+        if (array_key_exists($parserId, $this->getParsers())) {
+            $parser = $this->getParsers()[$parserId];
+        } else throw new UnknownParserException();
+
+        return $parser->parseLink($this->link)->getPreview();
     }
 
     /**
@@ -45,33 +72,6 @@ class Client
         $this->parsers = [(string) $parser => $parser] + $this->parsers;
 
         return $this;
-    }
-
-    /**
-     * Get parsed model array with parser name as a key
-     * @return LinkInterface[]
-     */
-    public function getParsed()
-    {
-        $parsed = [];
-
-        $parsers = $this->getParsers();
-
-        if (0 === count($parsers)) {
-            $this->addDefaultParsers();
-        }
-
-        foreach ($this->getParsers() as $name => $parser) {
-            $parser->getLink()->setUrl($this->getUrl());
-
-            if ($parser->hasParsableLink()) {
-                $parsed[$name] = $parser->parseLink();
-
-                if ($this->isSingleMode()) break;
-            }
-        }
-
-        return $parsed;
     }
 
     /**
@@ -96,34 +96,11 @@ class Client
     }
 
     /**
-     * Are we in a single mode?
-     *
-     * @return boolean
-     */
-    public function isSingleMode()
-    {
-        return $this->singleMode;
-    }
-
-    /**
-     * Set single mode on/off
-     *
-     * @param boolean $mode
-     * @return $this
-     */
-    public function setSingleMode($mode)
-    {
-        $this->singleMode = $mode;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getUrl()
     {
-        return $this->url;
+        return (!empty($this->link->getEffectiveUrl())) ? $this->link->getEffectiveUrl() : $this->link->getUrl();
     }
 
     /**
@@ -134,7 +111,7 @@ class Client
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->link->setUrl($url);
 
         return $this;
     }
@@ -156,10 +133,11 @@ class Client
 
     /**
      * Add default parsers
+     * @return void
      */
     protected function addDefaultParsers()
     {
-        $this->addParser(new GeneralParser());
+        $this->addParser(new HtmlParser());
         $this->addParser(new YouTubeParser());
     }
 }

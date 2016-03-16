@@ -2,22 +2,24 @@
 
 namespace Dusterio\LinkPreview\Tests\Parser;
 
-use Dusterio\LinkPreview\Parsers\GeneralParser;
+use Dusterio\LinkPreview\Parsers\HtmlParser;
+use Dusterio\LinkPreview\Exceptions\MalformedUrlException;
 
 class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider urlProvider
      * @param string $url
-     * @param bool $expectedResult
+     * @expectedException Dusterio\LinkPreview\Exceptions\MalformedUrlException
+     * @test
      */
-    public function testHasParsableLink($url, $expectedResult)
+    public function html_parser_can_see_if_a_link_is_bogus_and_throw_exception($url)
     {
-        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null);
+        $linkMock = $this->getMock('Dusterio\LinkPreview\Models\Link', null, [$url]);
 
-        $parser = new GeneralParser();
-        $parser->setLink($linkMock->setUrl($url));
-        self::assertEquals($parser->hasParsableLink(), $expectedResult);
+        $parser = new HtmlParser();
+
+        self::setExpectedExceptionFromAnnotation();
     }
 
     /**
@@ -26,9 +28,8 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
     public function urlProvider()
     {
         return [
-            ['http://github.com', true],
-            ['http:/trololo', false],
-            ['github.com', false]
+            ['http:/trololo'],
+            ['github.com']
         ];
     }
 }
