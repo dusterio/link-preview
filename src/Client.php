@@ -24,9 +24,9 @@ class Client
     /**
      * @param string $url Request address
      */
-    public function __construct($url)
+    public function __construct($url = null)
     {
-        $this->link = new Link($url);
+        if ($url) $this->setUrl($url);
         $this->addDefaultParsers();
     }
 
@@ -111,7 +111,7 @@ class Client
      */
     public function setUrl($url)
     {
-        $this->link->setUrl($url);
+        $this->link = new Link($url);
 
         return $this;
     }

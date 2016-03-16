@@ -36,7 +36,7 @@ Or add it to `composer.json` manually:
 }
 ```
 
-## Usage
+## Direct usage
 
 ```php
 use Dusterio\LinkPreview\Client;
@@ -52,7 +52,6 @@ $preview = $previewClient->getPreview('general');
 // Convert output to array
 $preview = $preview->toArray();
 ```
-
 
 **Output**
 
@@ -96,6 +95,31 @@ array(2) {
   ["id"]=>
   string(11) "v1uKhwN6FtA"
 }
+```
+
+### Usage in Laravel 5
+
+```php
+// Add in your config/app.php
+
+'providers' => [
+    '...',
+    'Dusterio\LinkPreview\Integrations\LaravelServiceProvider',
+];
+
+'aliases' => [
+    '...',
+    'Preview'    => 'Dusterio\LinkPreview\Integrations\LaravelFacade',
+];
+
+// Set target url
+Preview::setUrl('https://www.boogiecall.com');
+
+// Get parsed HTML tags as a plain array
+Preview::getPreview('general')->toArray();
+
+// In case of redirects, see what the final url was
+echo Preview::getUrl();
 ```
 
 ## Todo
