@@ -113,4 +113,20 @@ class Link implements LinkInterface
 
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function isHtml()
+    {
+        return !strncmp($this->getContentType(), 'text/', strlen('text/'));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isImage()
+    {
+        return !strncmp($this->getContentType(), 'image/', strlen('image/'));
+    }
 }

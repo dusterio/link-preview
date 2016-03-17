@@ -34,4 +34,18 @@ trait HasImportableFields
             }
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(array $params)
+    {
+        foreach($params as $property => $value) {
+            if (!property_exists($this, $property) || array_key_exists($property, $this->fields)) {
+                throw new UnknownFieldException();
+            }
+
+            $this->{$property} = $value;
+        }
+    }
 }

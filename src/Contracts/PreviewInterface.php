@@ -14,6 +14,13 @@ interface PreviewInterface
     public function getFields();
 
     /**
+     * Mass assignment of class properties
+     * @param array $params
+     * @return $this
+     */
+    public function update(array $params);
+
+    /**
      * Return all parsed data as an array
      * @return array
      */

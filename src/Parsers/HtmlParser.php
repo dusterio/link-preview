@@ -93,31 +93,40 @@ class HtmlParser extends BaseParser implements ParserInterface
     {
         $link = $this->readLink($link);
 
-        if (!strncmp($link->getContentType(), 'text/', strlen('text/'))) {
-            $htmlData = $this->parseHtml($link->getContent());
-
-            $this->getPreview()->setTitle($htmlData['title'])
-                ->setDescription($htmlData['description'])
-                ->setCover($htmlData['cover'])
-                ->setImages($htmlData['images']);
-        } elseif (!strncmp($link->getContentType(), 'image/', strlen('image/'))) {
-            $this->getPreview()->setCover($link->getEffectiveUrl());
+        if ($link->isHtml()) {
+            $this->getPreview()->update($this->parseHtml($link));
+        } else if ($link->isImage()) {
+            $this->getPreview()->update($this->parseImage($link));
         }
 
         return $this;
     }
 
     /**
-     * Extract required data from html source
-     * @param string $html
+     * @param LinkInterface $link
      * @return array
      */
-    protected function parseHtml($html)
+    protected function parseImage(LinkInterface $link)
+    {
+        return [
+            'cover' => $link->getEffectiveUrl(),
+            'images' => [
+                $link->getEffectiveUrl()
+            ]
+        ];
+    }
+
+    /**
+     * Extract required data from html source
+     * @param LinkInterface $link
+     * @return array
+     */
+    protected function parseHtml(LinkInterface $link)
     {
         $images = [];
 
         try {
-            $parser = new Crawler($html);
+            $parser = new Crawler($link->getContent());
 
             // Parse all known tags
             foreach($this->tags as $tag => $selectors) {

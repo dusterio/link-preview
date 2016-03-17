@@ -62,4 +62,16 @@ interface LinkInterface
      * @return $this
      */
     public function setEffectiveUrl($effectiveUrl);
+
+    /**
+     * Is this link an HTML page?
+     * @return boolean
+     */
+    public function isHtml();
+
+    /**
+     * Is this link an image?
+     * @return boolean
+     */
+    public function isImage();
 }
