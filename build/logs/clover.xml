@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1458369494">
-  <project timestamp="1458369494">
+<coverage generated="1458369831">
+  <project timestamp="1458369831">
     <package name="Dusterio\LinkPreview">
       <file name="/Users/duster/repos/link-preview/src/Client.php">
         <class name="Client" namespace="Dusterio\LinkPreview">
@@ -79,33 +79,16 @@
     </package>
     <package name="Dusterio\LinkPreview\Integrations">
       <file name="/Users/duster/repos/link-preview/src/Integrations/LaravelFacade.php">
-        <class name="LaravelFacade" namespace="Dusterio\LinkPreview\Integrations">
-          <metrics methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        <class name="LaravelFacade" namespace="Dusterio\LinkPreview\Integrations" fullPackage="Dusterio" package="Dusterio">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
         </class>
-        <line num="13" type="method" name="getFacadeAccessor" crap="2" count="0"/>
-        <line num="14" type="stmt" count="0"/>
-        <line num="15" type="stmt" count="0"/>
-        <line num="16" type="stmt" count="0"/>
-        <metrics loc="17" ncloc="12" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        <metrics loc="22" ncloc="12" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </file>
       <file name="/Users/duster/repos/link-preview/src/Integrations/LaravelServiceProvider.php">
-        <class name="LaravelServiceProvider" namespace="Dusterio\LinkPreview\Integrations">
-          <metrics methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="12" coveredelements="0"/>
+        <class name="LaravelServiceProvider" namespace="Dusterio\LinkPreview\Integrations" fullPackage="Dusterio" package="Dusterio">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
         </class>
-        <line num="21" type="method" name="boot" crap="2" count="0"/>
-        <line num="22" type="stmt" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <line num="30" type="method" name="register" crap="2" count="0"/>
-        <line num="31" type="stmt" count="0"/>
-        <line num="32" type="method" name="anonymous function" crap="2" count="0"/>
-        <line num="33" type="stmt" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="42" type="method" name="provides" crap="2" count="0"/>
-        <line num="43" type="stmt" count="0"/>
-        <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <metrics loc="46" ncloc="26" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="13" coveredelements="0"/>
+        <metrics loc="51" ncloc="26" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </file>
     </package>
     <package name="Dusterio\LinkPreview\Models">
@@ -314,6 +297,6 @@
         <metrics loc="50" ncloc="41" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="7" elements="19" coveredelements="7"/>
       </file>
     </package>
-    <metrics files="19" loc="1072" ncloc="664" classes="15" methods="50" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="147" coveredstatements="77" elements="197" coveredelements="105"/>
+    <metrics files="19" loc="1082" ncloc="664" classes="15" methods="45" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="135" coveredstatements="77" elements="180" coveredelements="105"/>
   </project>
 </coverage>

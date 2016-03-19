@@ -3,6 +3,11 @@ namespace Dusterio\LinkPreview\Integrations;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class LaravelFacade
+ * @package Dusterio\LinkPreview\Integrations
+ * @codeCoverageIgnore
+ */
 class LaravelFacade extends Facade
 {
     /**
