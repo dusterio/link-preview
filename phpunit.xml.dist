@@ -18,7 +18,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/LinkPreview/</directory>
+            <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
 </phpunit>

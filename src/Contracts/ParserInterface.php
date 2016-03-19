@@ -5,6 +5,7 @@ use Dusterio\LinkPreview\Models\Preview;
 
 /**
  * Interface ParserInterface
+ * @codeCoverageIgnore
  */
 interface ParserInterface
 {

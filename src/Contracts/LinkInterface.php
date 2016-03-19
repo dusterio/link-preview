@@ -4,6 +4,7 @@ namespace Dusterio\LinkPreview\Contracts;
 
 /**
  * Interface LinkInterface
+ * @codeCoverageIgnore
  */
 interface LinkInterface
 {
