@@ -1,5 +1,6 @@
 # Link Preview 
 [![Build Status](https://travis-ci.org/dusterio/link-preview.svg)](https://travis-ci.org/dusterio/link-preview)
+[![Code Climate](https://codeclimate.com/github/dusterio/link-preview/badges/gpa.svg)](https://codeclimate.com/github/dusterio/link-preview/badges)
 [![Total Downloads](https://poser.pugx.org/dusterio/link-preview/d/total.svg)](https://packagist.org/packages/dusterio/link-preview)
 [![Latest Stable Version](https://poser.pugx.org/dusterio/link-preview/v/stable.svg)](https://packagist.org/packages/dusterio/link-preview)
 [![Latest Unstable Version](https://poser.pugx.org/dusterio/link-preview/v/unstable.svg)](https://packagist.org/packages/dusterio/link-preview)
