@@ -17,7 +17,7 @@ trait HasImportableFields
         if (preg_match('~^(set|get)([A-Z])(.*)$~', $methodName, $matches)) {
             $property = strtolower($matches[2]) . $matches[3];
 
-            if (!property_exists($this, $property) || array_key_exists($property, $this->fields)) {
+            if (!property_exists($this, $property) || !in_array($property, $this->fields)) {
                 throw new UnknownFieldException();
             }
 
