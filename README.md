@@ -75,6 +75,23 @@ array(4) {
 }
 ```
 
+## Timeouts and errors
+
+```php
+// Default connect timeout is 5 seconds, you can change it to anything you want
+$client->getParser('general')->getReader()->config(['connect_timeout' => 3.14]);
+
+// Default maximum redirect count is 10, but you can change it too
+$client->getParser('general')->getReader()->config(['allow_redirects' => ['max' => 10]]);
+
+// If there is a network error (DNS, connect, etc), we throw ConnectionErrorException
+try {
+    $previews = $previewClient->getPreviews();
+} catch (\Dusterio\LinkPreview\Exceptions\ConnectionErrorException $e) {
+    echo "Oh no!";
+}
+```
+
 ### YouTube example
 
 ```php

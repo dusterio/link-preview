@@ -129,4 +129,12 @@ class Link implements LinkInterface
     {
         return !strncmp($this->getContentType(), 'image/', strlen('image/'));
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function isUp()
+    {
+        return $this->content !== false && $this->contentType !== false;
+    }
 }

@@ -75,6 +75,15 @@ class Client
     }
 
     /**
+     * @param $id
+     * @return bool|ParserInterface
+     */
+    public function getParser($id)
+    {
+        return isset($this->parsers[$id]) ? $this->parsers[$id] : false;
+    }
+
+    /**
      * Get parsers
      * @return ParserInterface[]
      */

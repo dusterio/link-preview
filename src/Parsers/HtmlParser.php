@@ -6,6 +6,7 @@ use Dusterio\LinkPreview\Contracts\LinkInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
 use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Contracts\ParserInterface;
+use Dusterio\LinkPreview\Exceptions\ConnectionErrorException;
 use Dusterio\LinkPreview\Models\Link;
 use Dusterio\LinkPreview\Readers\HttpReader;
 use Dusterio\LinkPreview\Models\HtmlPreview;
@@ -92,6 +93,8 @@ class HtmlParser extends BaseParser implements ParserInterface
     public function parseLink(LinkInterface $link)
     {
         $link = $this->readLink($link);
+
+        if (!$link->isUp()) throw new ConnectionErrorException();
 
         if ($link->isHtml()) {
             $this->getPreview()->update($this->parseHtml($link));

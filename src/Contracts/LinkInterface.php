@@ -75,4 +75,10 @@ interface LinkInterface
      * @return boolean
      */
     public function isImage();
+
+    /**
+     * Is this link functioning? (could we open it?)
+     * @return boolean
+     */
+    public function isUp();
 }

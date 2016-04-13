@@ -13,4 +13,10 @@ interface ReaderInterface
      * @return LinkInterface
      */
     public function readLink(LinkInterface $link);
+
+    /**
+     * @param array $parameters
+     * @return void
+     */
+    public function config(array $parameters);
 }
