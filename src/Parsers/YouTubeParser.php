@@ -55,7 +55,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->getPreview()
             ->setId($matches[1])
             ->setEmbed(
-                '<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'.$this->getPreview()->getId().'" frameborder="0"/>'
+                '<iframe id="ytplayer" type="text/html" width="640" height="390" src="//www.youtube.com/embed/'.$this->getPreview()->getId().'" frameborder="0"></iframe>'
             );
 
         return $this;
