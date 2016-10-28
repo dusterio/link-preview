@@ -32,6 +32,16 @@ class HtmlPreview implements PreviewInterface
     private $title;
 
     /**
+     * @var string $video Video for the page (chosen by the webmaster)
+     */
+    private $video;
+
+    /**
+     * @var string $videoType If there is  video, what type it is
+     */
+    private $videoType;
+
+    /**
      * Fields exposed
      * @var array
      */
@@ -39,6 +49,8 @@ class HtmlPreview implements PreviewInterface
         'cover',
         'images',
         'title',
-        'description'
+        'description',
+        'video',
+        'videoType',
     ];
 }
