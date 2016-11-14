@@ -24,23 +24,34 @@ class HtmlParser extends BaseParser implements ParserInterface
      */
     private $tags = [
         'cover' => [
-            ['selector' => 'meta[itemprop="image"]', 'attribute' => 'content'],
+            ['selector' => 'meta[property="twitter:image"]', 'attribute' => 'value'],
             ['selector' => 'meta[property="og:image"]', 'attribute' => 'content'],
-            ['selector' => 'meta[property="twitter:image"]', 'attribute' => 'value']
+            ['selector' => 'meta[itemprop="image"]', 'attribute' => 'content'],
         ],
 
         'title' => [
-            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
-            ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'value'],
+            ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
+            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
             ['selector' => 'title']
         ],
 
         'description' => [
-            ['selector' => 'meta[itemprop="description"]', 'attribute' => 'content'],
+            ['selector' => 'meta[property="twitter:description"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:description"]', 'attribute' => 'content'],
-            ['selector' => 'meta[name="description"]', 'attribute' => 'content']
-        ]
+            ['selector' => 'meta[itemprop="description"]', 'attribute' => 'content'],
+            ['selector' => 'meta[name="description"]', 'attribute' => 'content'],
+        ],
+
+        'video' => [
+            ['selector' => 'meta[property="twitter:player:stream"]', 'attribute' => 'content'],
+            ['selector' => 'meta[property="og:video"]', 'attribute' => 'content'],
+        ],
+
+        'videoType' => [
+            ['selector' => 'meta[property="twitter:player:stream:content_type"]', 'attribute' => 'content'],
+            ['selector' => 'meta[property="og:video:type"]', 'attribute' => 'content'],
+        ],
     ];
 
     /**
@@ -168,6 +179,6 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         if (!isset($cover) && count($images)) $cover = $images[0];
 
-        return compact('cover', 'title', 'description', 'images');
+        return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
 }
