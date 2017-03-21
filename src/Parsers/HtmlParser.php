@@ -140,7 +140,8 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = [];
 
         try {
-            $parser = new Crawler($link->getContent());
+            $parser = new Crawler();
+	    $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
             foreach($this->tags as $tag => $selectors) {

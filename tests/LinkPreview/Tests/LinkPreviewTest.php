@@ -98,7 +98,7 @@ class LinkPreviewTest extends \PHPUnit_Framework_TestCase
      */
     public function can_parse_a_youtube_link()
     {
-        $linkPreview = new Client('https://www.youtube.com/watch?v=C0DPdy98e4c');
+        $linkPreview = new Client('https://www.youtube.com/watch?v=ycGfvA1vkR8');
         $parsedLink = $linkPreview->getPreview('youtube');
         self::assertInstanceOf('Dusterio\LinkPreview\Models\VideoPreview', $parsedLink);
     }
