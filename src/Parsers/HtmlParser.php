@@ -24,13 +24,13 @@ class HtmlParser extends BaseParser implements ParserInterface
      */
     private $tags = [
         'cover' => [
-            ['selector' => 'meta[property="twitter:image"]', 'attribute' => 'value'],
+            ['selector' => 'meta[property="twitter:image"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:image"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="image"]', 'attribute' => 'content'],
         ],
 
         'title' => [
-            ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'value'],
+            ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
             ['selector' => 'title']
