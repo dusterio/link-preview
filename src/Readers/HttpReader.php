@@ -42,6 +42,8 @@ class HttpReader implements ReaderInterface
             'cookies' => $this->jar,
             'connect_timeout' => 5
         ];
+
+        $this->config['headers']['User-Agent'] = 'Mozilla/5.0';
     }
 
     /**
