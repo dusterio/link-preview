@@ -107,6 +107,14 @@ class Link implements LinkInterface
     /**
      * @inheritdoc
      */
+    public function getBaseUrl()
+    {
+        return '//' . parse_url($this->effectiveUrl, PHP_URL_HOST);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setEffectiveUrl($effectiveUrl)
     {
         $this->effectiveUrl = $effectiveUrl;
