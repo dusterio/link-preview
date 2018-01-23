@@ -40,7 +40,10 @@ class HttpReader implements ReaderInterface
         $this->config = $config ?: [
             'allow_redirects' => ['max' => 10],
             'cookies' => $this->jar,
-            'connect_timeout' => 5
+            'connect_timeout' => 5,
+            'headers' => [
+                'User-Agent' => 'dusterio/link-preview v1.2'
+            ]
         ];
     }
 
