@@ -3,32 +3,26 @@
 namespace Dusterio\LinkPreview\Parsers;
 
 use Dusterio\LinkPreview\Contracts\LinkInterface;
-use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
 
 abstract class BaseParser
 {
     /**
-     * @var ReaderInterface $reader
+     * @var ReaderInterface
      */
     private $reader;
 
     /**
-     * @var PreviewInterface $preview
+     * @var PreviewInterface
      */
     private $preview;
 
-    /**
-     * @inheritdoc
-     */
     public function getPreview()
     {
         return $this->preview;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setPreview(PreviewInterface $preview)
     {
         $this->preview = $preview;
@@ -46,6 +40,7 @@ abstract class BaseParser
 
     /**
      * @param ReaderInterface $reader
+     *
      * @return $this
      */
     public function setReader(ReaderInterface $reader)
@@ -56,8 +51,10 @@ abstract class BaseParser
     }
 
     /**
-     * Read link
+     * Read link.
+     *
      * @param LinkInterface $link
+     *
      * @return LinkInterface
      */
     protected function readLink(LinkInterface $link)

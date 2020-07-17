@@ -4,11 +4,11 @@ namespace Dusterio\LinkPreview;
 
 use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
-use Dusterio\LinkPreview\Parsers\HtmlParser;
-use Dusterio\LinkPreview\Parsers\YouTubeParser;
-use Dusterio\LinkPreview\Parsers\VimeoParser;
-use Dusterio\LinkPreview\Models\Link;
 use Dusterio\LinkPreview\Exceptions\UnknownParserException;
+use Dusterio\LinkPreview\Models\Link;
+use Dusterio\LinkPreview\Parsers\HtmlParser;
+use Dusterio\LinkPreview\Parsers\VimeoParser;
+use Dusterio\LinkPreview\Parsers\YouTubeParser;
 
 class Client
 {
@@ -18,7 +18,7 @@ class Client
     private $parsers = [];
 
     /**
-     * @var Link $link
+     * @var Link
      */
     private $link;
 
@@ -27,12 +27,15 @@ class Client
      */
     public function __construct($url = null)
     {
-        if ($url) $this->setUrl($url);
+        if ($url) {
+            $this->setUrl($url);
+        }
         $this->addDefaultParsers();
     }
 
     /**
-     * Try to get previews from as many parsers as possible
+     * Try to get previews from as many parsers as possible.
+     *
      * @return PreviewInterface[]
      */
     public function getPreviews()
@@ -40,32 +43,39 @@ class Client
         $parsed = [];
 
         foreach ($this->getParsers() as $name => $parser) {
-            if ($parser->canParseLink($this->link))
+            if ($parser->canParseLink($this->link)) {
                 $parsed[$name] = $parser->parseLink($this->link)->getPreview();
+            }
         }
 
         return $parsed;
     }
 
     /**
-     * Get a preview from a single parser
+     * Get a preview from a single parser.
+     *
      * @param string $parserId
+     *
      * @throws UnknownParserException
-     * @return PreviewInterface|boolean
+     *
+     * @return PreviewInterface|bool
      */
     public function getPreview($parserId)
     {
         if (array_key_exists($parserId, $this->getParsers())) {
             $parser = $this->getParsers()[$parserId];
-        } else throw new UnknownParserException();
+        } else {
+            throw new UnknownParserException();
+        }
 
         return $parser->parseLink($this->link)->getPreview();
     }
 
     /**
-     * Add parser to the beginning of parsers list
+     * Add parser to the beginning of parsers list.
      *
      * @param ParserInterface $parser
+     *
      * @return $this
      */
     public function addParser(ParserInterface $parser)
@@ -77,6 +87,7 @@ class Client
 
     /**
      * @param $id
+     *
      * @return bool|ParserInterface
      */
     public function getParser($id)
@@ -85,7 +96,8 @@ class Client
     }
 
     /**
-     * Get parsers
+     * Get parsers.
+     *
      * @return ParserInterface[]
      */
     public function getParsers()
@@ -94,8 +106,10 @@ class Client
     }
 
     /**
-     * Set parsers
+     * Set parsers.
+     *
      * @param ParserInterface[] $parsers
+     *
      * @return $this
      */
     public function setParsers($parsers)
@@ -114,9 +128,10 @@ class Client
     }
 
     /**
-     * Set target url
+     * Set target url.
      *
      * @param string $url Website url to parse
+     *
      * @return $this
      */
     public function setUrl($url)
@@ -127,9 +142,10 @@ class Client
     }
 
     /**
-     * Remove parser from parsers list
+     * Remove parser from parsers list.
      *
      * @param string $name Parser name
+     *
      * @return $this
      */
     public function removeParser($name)
@@ -142,7 +158,8 @@ class Client
     }
 
     /**
-     * Add default parsers
+     * Add default parsers.
+     *
      * @return void
      */
     protected function addDefaultParsers()

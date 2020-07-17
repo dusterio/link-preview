@@ -3,12 +3,12 @@
 namespace Dusterio\LinkPreview\Tests\Parser;
 
 use Dusterio\LinkPreview\Parsers\HtmlParser;
-use Dusterio\LinkPreview\Exceptions\MalformedUrlException;
 
 class GeneralParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider urlProvider
+     *
      * @param string $url
      * @expectedException Dusterio\LinkPreview\Exceptions\MalformedUrlException
      * @test
@@ -29,7 +29,7 @@ class GeneralParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['http:/trololo'],
-            ['github.com']
+            ['github.com'],
         ];
     }
 }

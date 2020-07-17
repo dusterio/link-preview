@@ -1,12 +1,13 @@
 <?php
+
 namespace Dusterio\LinkPreview\Integrations;
 
-use Illuminate\Support\ServiceProvider;
 use Dusterio\LinkPreview\Client;
+use Illuminate\Support\ServiceProvider;
 
 /**
- * Class LaravelServiceProvider
- * @package Dusterio\LinkPreview\Integrations
+ * Class LaravelServiceProvider.
+ *
  * @codeCoverageIgnore
  */
 class LaravelServiceProvider extends ServiceProvider
@@ -34,7 +35,7 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('link-preview', function() {
+        $this->app->singleton('link-preview', function () {
             return new Client();
         });
     }

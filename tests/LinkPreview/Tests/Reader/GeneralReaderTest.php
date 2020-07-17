@@ -14,8 +14,8 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
         $responseMock = $this->getMock(
             'Psr\Http\Message\ResponseInterface',
             ['getBody', 'getContentType', 'getEffectiveUrl', 'getStatusCode', 'withStatus', 'getReasonPhrase',
-            'getProtocolVersion', 'withProtocolVersion', 'getHeader', 'getHeaders', 'hasHeader', 'withHeader',
-            'getHeaderLine', 'withAddedHeader', 'withoutHeader', 'withBody'],
+                'getProtocolVersion', 'withProtocolVersion', 'getHeader', 'getHeaders', 'hasHeader', 'withHeader',
+                'getHeaderLine', 'withAddedHeader', 'withoutHeader', 'withBody', ],
             [],
             '',
             false
@@ -36,11 +36,10 @@ class GeneralReaderTest extends \PHPUnit_Framework_TestCase
         $requestMock = $this->getMock(
             'Psr\Http\Message\RequestInterface',
             ['send', 'getRequestTarget', 'withRequestTarget', 'getMethod', 'withMethod', 'getUri', 'getProtocolVersion',
-            'withProtocolVersion', 'getHeaders', 'hasHeader', 'getHeaderLine', 'getHeader', 'withHeader', 'withUri',
-            'withAddedHeader', 'withoutHeader', 'getBody', 'withBody'],
+                'withProtocolVersion', 'getHeaders', 'hasHeader', 'getHeaderLine', 'getHeader', 'withHeader', 'withUri',
+                'withAddedHeader', 'withoutHeader', 'getBody', 'withBody', ],
             [],
             '',
-
             false
         );
 

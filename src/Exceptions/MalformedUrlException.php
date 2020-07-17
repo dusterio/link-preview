@@ -3,11 +3,10 @@
 namespace Dusterio\LinkPreview\Exceptions;
 
 /**
- * Class MalformedUrlException
- * @package Dusterio\LinkPreview\Exceptions
+ * Class MalformedUrlException.
+ *
  * @codeCoverageIgnore
  */
 class MalformedUrlException extends \Exception
 {
-
 }

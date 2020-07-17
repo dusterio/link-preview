@@ -3,24 +3,24 @@
 namespace Dusterio\LinkPreview\Parsers;
 
 use Dusterio\LinkPreview\Contracts\LinkInterface;
-use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Models\VideoPreview;
 use Dusterio\LinkPreview\Readers\HttpReader;
 
 /**
- * Class YouTubeParser
+ * Class YouTubeParser.
  */
 class YouTubeParser extends BaseParser implements ParserInterface
 {
     /**
-     * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex
+     * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex.
      */
     const PATTERN = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
 
     /**
-     * @param ReaderInterface $reader
+     * @param ReaderInterface  $reader
      * @param PreviewInterface $preview
      */
     public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
@@ -30,7 +30,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -38,15 +38,15 @@ class YouTubeParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function canParseLink(LinkInterface $link)
     {
-        return (preg_match(static::PATTERN, $link->getUrl()));
+        return preg_match(static::PATTERN, $link->getUrl());
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function parseLink(LinkInterface $link)
     {

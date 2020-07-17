@@ -3,11 +3,10 @@
 namespace Dusterio\LinkPreview\Exceptions;
 
 /**
- * Class UnknownParserException
- * @package Dusterio\LinkPreview\Exceptions
+ * Class UnknownParserException.
+ *
  * @codeCoverageIgnore
  */
 class UnknownParserException extends \Exception
 {
-
 }

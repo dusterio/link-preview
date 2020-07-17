@@ -12,12 +12,12 @@ class HtmlPreview implements PreviewInterface
     use HasImportableFields;
 
     /**
-     * @var string $description Link description
+     * @var string Link description
      */
     private $description;
 
     /**
-     * @var string $cover Cover image (usually chosen by webmaster)
+     * @var string Cover image (usually chosen by webmaster)
      */
     private $cover;
 
@@ -27,22 +27,23 @@ class HtmlPreview implements PreviewInterface
     private $images = [];
 
     /**
-     * @var string $title Link title
+     * @var string Link title
      */
     private $title;
 
     /**
-     * @var string $video Video for the page (chosen by the webmaster)
+     * @var string Video for the page (chosen by the webmaster)
      */
     private $video;
 
     /**
-     * @var string $videoType If there is  video, what type it is
+     * @var string If there is  video, what type it is
      */
     private $videoType;
 
     /**
-     * Fields exposed
+     * Fields exposed.
+     *
      * @var array
      */
     private $fields = [

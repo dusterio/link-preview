@@ -7,7 +7,7 @@ use Dusterio\LinkPreview\Traits\HasExportableFields;
 use Dusterio\LinkPreview\Traits\HasImportableFields;
 
 /**
- * Class VideoLink
+ * Class VideoLink.
  */
 class VideoPreview implements PreviewInterface
 {
@@ -15,17 +15,17 @@ class VideoPreview implements PreviewInterface
     use HasImportableFields;
 
     /**
-     * @var string $embed Video embed code
+     * @var string Video embed code
      */
     private $embed;
 
     /**
-     * @var string $video Url to video
+     * @var string Url to video
      */
     private $video;
 
     /**
-     * @var string $id Video identification code
+     * @var string Video identification code
      */
     private $id;
 
@@ -34,6 +34,6 @@ class VideoPreview implements PreviewInterface
      */
     private $fields = [
         'embed',
-        'id'
+        'id',
     ];
 }

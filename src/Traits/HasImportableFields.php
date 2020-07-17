@@ -9,13 +9,15 @@ trait HasImportableFields
     /**
      * @param $methodName
      * @param $args
-     * @return string|array
+     *
      * @throws UnknownFieldException
+     *
+     * @return string|array
      */
     public function __call($methodName, $args)
     {
         if (preg_match('~^(set|get)([A-Z])(.*)$~', $methodName, $matches)) {
-            $property = strtolower($matches[2]) . $matches[3];
+            $property = strtolower($matches[2]).$matches[3];
 
             if (!property_exists($this, $property) || !in_array($property, $this->fields)) {
                 throw new UnknownFieldException();
@@ -36,11 +38,11 @@ trait HasImportableFields
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function update(array $params)
     {
-        foreach($params as $property => $value) {
+        foreach ($params as $property => $value) {
             if (!property_exists($this, $property) || array_key_exists($property, $this->fields)) {
                 throw new UnknownFieldException();
             }

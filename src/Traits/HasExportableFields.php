@@ -5,7 +5,7 @@ namespace Dusterio\LinkPreview\Traits;
 trait HasExportableFields
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFields()
     {
@@ -13,13 +13,15 @@ trait HasExportableFields
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toArray()
     {
         $output = [];
 
-        if (!isset($this->fields)) return $output;
+        if (!isset($this->fields)) {
+            return $output;
+        }
 
         foreach ($this->fields as $field) {
             $output[$field] = $this->{$field};

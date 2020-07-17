@@ -3,24 +3,24 @@
 namespace Dusterio\LinkPreview\Parsers;
 
 use Dusterio\LinkPreview\Contracts\LinkInterface;
-use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
+use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use Dusterio\LinkPreview\Models\VideoPreview;
 use Dusterio\LinkPreview\Readers\HttpReader;
 
 /**
- * Class YouTubeParser
+ * Class YouTubeParser.
  */
 class VimeoParser extends BaseParser implements ParserInterface
 {
     /**
-     * Url validation pattern based on http://stackoverflow.com/questions/13286785/get-video-id-from-vimeo-url/22071143#comment48088417_22071143
+     * Url validation pattern based on http://stackoverflow.com/questions/13286785/get-video-id-from-vimeo-url/22071143#comment48088417_22071143.
      */
     const PATTERN = '/^.*(?:vimeo.com)\\/(?:channels\\/|groups\\/[^\\/]*\\/videos\\/|album\\/\\d+\\/video\\/|video\\/|)(\\d+)(?:$|\\/|\\?)/';
 
     /**
-     * @param ReaderInterface $reader
+     * @param ReaderInterface  $reader
      * @param PreviewInterface $preview
      */
     public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
@@ -30,7 +30,7 @@ class VimeoParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -38,15 +38,15 @@ class VimeoParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function canParseLink(LinkInterface $link)
     {
-        return (preg_match(static::PATTERN, $link->getUrl()));
+        return preg_match(static::PATTERN, $link->getUrl());
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function parseLink(LinkInterface $link)
     {

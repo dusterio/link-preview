@@ -6,32 +6,33 @@ use Dusterio\LinkPreview\Contracts\LinkInterface;
 use Dusterio\LinkPreview\Exceptions\MalformedUrlException;
 
 /**
- * Class Link
+ * Class Link.
  */
 class Link implements LinkInterface
 {
     /**
-     * @var string $content Website content
+     * @var string Website content
      */
     private $content;
 
     /**
-     * @var string $contentType Website content type
+     * @var string Website content type
      */
     private $contentType;
 
     /**
-     * @var string $url
+     * @var string
      */
     private $url;
 
     /**
-     * @var string $effectiveUrl In case of redirects, this contains the final path
+     * @var string In case of redirects, this contains the final path
      */
     private $effectiveUrl;
 
     /**
      * @param string $url
+     *
      * @throws MalformedUrlException
      */
     public function __construct($url)
@@ -44,7 +45,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContent()
     {
@@ -52,17 +53,17 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setContent($content)
     {
-        $this->content = (string)$content;
+        $this->content = (string) $content;
 
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContentType()
     {
@@ -70,7 +71,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setContentType($contentType)
     {
@@ -80,7 +81,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUrl()
     {
@@ -88,7 +89,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUrl($url)
     {
@@ -96,8 +97,9 @@ class Link implements LinkInterface
 
         return $this;
     }
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEffectiveUrl()
     {
@@ -105,7 +107,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setEffectiveUrl($effectiveUrl)
     {
@@ -115,7 +117,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isHtml()
     {
@@ -123,7 +125,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isImage()
     {
@@ -131,7 +133,7 @@ class Link implements LinkInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isUp()
     {

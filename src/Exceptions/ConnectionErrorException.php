@@ -3,10 +3,8 @@
 namespace Dusterio\LinkPreview\Exceptions;
 
 /**
- * Class ConnectionErorException
- * @package Dusterio\LinkPreview\Exceptions
+ * Class ConnectionErorException.
  */
 class ConnectionErrorException extends \Exception
 {
-
 }

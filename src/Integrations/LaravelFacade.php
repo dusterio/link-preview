@@ -1,17 +1,18 @@
 <?php
+
 namespace Dusterio\LinkPreview\Integrations;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class LaravelFacade
- * @package Dusterio\LinkPreview\Integrations
+ * Class LaravelFacade.
+ *
  * @codeCoverageIgnore
  */
 class LaravelFacade extends Facade
 {
     /**
-     * Name of the binding in the IoC container
+     * Name of the binding in the IoC container.
      *
      * @return string
      */

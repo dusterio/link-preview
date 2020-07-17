@@ -6,31 +6,32 @@ use Dusterio\LinkPreview\Contracts\LinkInterface;
 use Dusterio\LinkPreview\Contracts\ReaderInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\TransferStats;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\TransferStats;
 
 /**
- * Class HttpReader
+ * Class HttpReader.
  */
 class HttpReader implements ReaderInterface
 {
     /**
-     * @var Client $client
+     * @var Client
      */
     private $client;
 
     /**
-     * @var array $config
+     * @var array
      */
     private $config;
 
     /**
-     * @var CookieJar $jar
+     * @var CookieJar
      */
     private $jar;
 
     /**
      * HttpReader constructor.
+     *
      * @param array|null $config
      */
     public function __construct($config = null)
@@ -39,11 +40,11 @@ class HttpReader implements ReaderInterface
 
         $this->config = $config ?: [
             'allow_redirects' => ['max' => 10],
-            'cookies' => $this->jar,
+            'cookies'         => $this->jar,
             'connect_timeout' => 5,
-            'headers' => [
-                'User-Agent' => 'dusterio/link-preview v1.2'
-            ]
+            'headers'         => [
+                'User-Agent' => 'dusterio/link-preview v1.2',
+            ],
         ];
     }
 
@@ -86,7 +87,7 @@ class HttpReader implements ReaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function readLink(LinkInterface $link)
     {
@@ -96,7 +97,7 @@ class HttpReader implements ReaderInterface
             $response = $client->request('GET', $link->getUrl(), array_merge($this->config, [
                 'on_stats' => function (TransferStats $stats) use (&$link) {
                     $link->setEffectiveUrl($stats->getEffectiveUri());
-                }
+                },
             ]));
 
             $link->setContent($response->getBody())

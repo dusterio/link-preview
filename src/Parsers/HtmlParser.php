@@ -3,22 +3,21 @@
 namespace Dusterio\LinkPreview\Parsers;
 
 use Dusterio\LinkPreview\Contracts\LinkInterface;
+use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
 use Dusterio\LinkPreview\Contracts\ReaderInterface;
-use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Exceptions\ConnectionErrorException;
-use Dusterio\LinkPreview\Models\Link;
-use Dusterio\LinkPreview\Readers\HttpReader;
 use Dusterio\LinkPreview\Models\HtmlPreview;
+use Dusterio\LinkPreview\Readers\HttpReader;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Class HtmlParser
+ * Class HtmlParser.
  */
 class HtmlParser extends BaseParser implements ParserInterface
 {
     /**
-     * Supported HTML tags
+     * Supported HTML tags.
      *
      * @var array
      */
@@ -33,7 +32,7 @@ class HtmlParser extends BaseParser implements ParserInterface
             ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
-            ['selector' => 'title']
+            ['selector' => 'title'],
         ],
 
         'description' => [
@@ -55,14 +54,15 @@ class HtmlParser extends BaseParser implements ParserInterface
     ];
 
     /**
-     * Smaller images will be ignored
+     * Smaller images will be ignored.
+     *
      * @var int
      */
     private $imageMinimumWidth = 300;
     private $imageMinimumHeight = 300;
 
     /**
-     * @param ReaderInterface $reader
+     * @param ReaderInterface  $reader
      * @param PreviewInterface $preview
      */
     public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
@@ -72,13 +72,12 @@ class HtmlParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __toString()
     {
         return 'general';
     }
-
 
     /**
      * @param int $width
@@ -91,7 +90,7 @@ class HtmlParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function canParseLink(LinkInterface $link)
     {
@@ -99,17 +98,18 @@ class HtmlParser extends BaseParser implements ParserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function parseLink(LinkInterface $link)
     {
         $link = $this->readLink($link);
 
-        if (!$link->isUp()) throw new ConnectionErrorException();
-
+        if (!$link->isUp()) {
+            throw new ConnectionErrorException();
+        }
         if ($link->isHtml()) {
             $this->getPreview()->update($this->parseHtml($link));
-        } else if ($link->isImage()) {
+        } elseif ($link->isImage()) {
             $this->getPreview()->update($this->parseImage($link));
         }
 
@@ -118,21 +118,24 @@ class HtmlParser extends BaseParser implements ParserInterface
 
     /**
      * @param LinkInterface $link
+     *
      * @return array
      */
     protected function parseImage(LinkInterface $link)
     {
         return [
-            'cover' => $link->getEffectiveUrl(),
+            'cover'  => $link->getEffectiveUrl(),
             'images' => [
-                $link->getEffectiveUrl()
-            ]
+                $link->getEffectiveUrl(),
+            ],
         ];
     }
 
     /**
-     * Extract required data from html source
+     * Extract required data from html source.
+     *
      * @param LinkInterface $link
+     *
      * @return array
      */
     protected function parseHtml(LinkInterface $link)
@@ -141,11 +144,11 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         try {
             $parser = new Crawler();
-	    $parser->addHtmlContent($link->getContent());
+            $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
-            foreach($this->tags as $tag => $selectors) {
-                foreach($selectors as $selector) {
+            foreach ($this->tags as $tag => $selectors) {
+                foreach ($selectors as $selector) {
                     if ($parser->filter($selector['selector'])->count() > 0) {
                         if (isset($selector['attribute'])) {
                             ${$tag} = $parser->filter($selector['selector'])->first()->attr($selector['attribute']);
@@ -158,17 +161,27 @@ class HtmlParser extends BaseParser implements ParserInterface
                 }
 
                 // Default is empty string
-                if (!isset(${$tag})) ${$tag} = '';
+                if (!isset(${$tag})) {
+                    ${$tag} = '';
+                }
             }
 
             // Parse all images on this page
-            foreach($parser->filter('img') as $image) {
-                if (!$image->hasAttribute('src')) continue;
-                if (filter_var($image->getAttribute('src'), FILTER_VALIDATE_URL) === false) continue;
+            foreach ($parser->filter('img') as $image) {
+                if (!$image->hasAttribute('src')) {
+                    continue;
+                }
+                if (filter_var($image->getAttribute('src'), FILTER_VALIDATE_URL) === false) {
+                    continue;
+                }
 
                 // This is not bulletproof, actual image maybe bigger than tags
-                if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
-                if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
+                if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) {
+                    continue;
+                }
+                if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) {
+                    continue;
+                }
 
                 $images[] = $image->getAttribute('src');
             }
@@ -178,7 +191,9 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         $images = array_unique($images);
 
-        if (!isset($cover) && count($images)) $cover = $images[0];
+        if (!isset($cover) && count($images)) {
+            $cover = $images[0];
+        }
 
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
