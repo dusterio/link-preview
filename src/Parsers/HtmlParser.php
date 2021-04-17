@@ -11,6 +11,8 @@ use Dusterio\LinkPreview\Models\Link;
 use Dusterio\LinkPreview\Readers\HttpReader;
 use Dusterio\LinkPreview\Models\HtmlPreview;
 use Symfony\Component\DomCrawler\Crawler;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
 
 /**
  * Class HtmlParser
@@ -179,6 +181,11 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = array_unique($images);
 
         if (!isset($cover) && count($images)) $cover = $images[0];
+
+        $coverUri = new Uri($cover);
+        if (!Uri::isAbsolute($coverUri)) {
+            $cover = (string) UriResolver::resolve($link->getEffectiveUrl(), $coverUri);
+        }
 
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
