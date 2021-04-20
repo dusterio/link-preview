@@ -180,6 +180,9 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         if (!isset($cover) && count($images)) $cover = $images[0];
 
+        if (isset($cover) && substr($cover, 0, 1) === '/') // relative path
+            $cover = $link->getBaseUrl() . $cover; // absolute path
+
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
 }
