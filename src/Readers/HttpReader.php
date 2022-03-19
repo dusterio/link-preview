@@ -45,6 +45,8 @@ class HttpReader implements ReaderInterface
                 'User-Agent' => 'dusterio/link-preview v1.2'
             ]
         ];
+
+        $this->config['headers']['User-Agent'] = 'Mozilla/5.0';
     }
 
     /**

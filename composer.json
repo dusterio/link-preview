@@ -1,15 +1,15 @@
 {
-    "name": "dusterio/link-preview",
+    "name": "jcarlosr/link-preview",
     "type": "library",
     "description": "Link preview generation for PHP with Laravel support",
     "keywords": ["php","url","scraping","laravel","preview"],
-    "homepage": "http://github.com/dusterio/link-preview",
+    "homepage": "http://github.com/jcarlosr/link-preview",
     "license": "MIT",
     "authors": [
         {
-            "name": "Denis Mysenko",
-            "email": "denis@mysenko.com",
-            "homepage": "https://www.mysenko.com"
+            "name": "Juan Ramos",
+            "email": "hola@programacionymas.com",
+            "homepage": "https://programacionymas.com"
         }
     ],
     "require": {

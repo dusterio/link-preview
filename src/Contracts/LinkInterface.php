@@ -65,6 +65,12 @@ interface LinkInterface
     public function setEffectiveUrl($effectiveUrl);
 
     /**
+     * Get domain without path nor parameters
+     * @return string
+     */
+    public function getBaseUrl();
+
+    /**
      * Is this link an HTML page?
      * @return boolean
      */
