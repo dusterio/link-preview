@@ -141,7 +141,7 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         try {
             $parser = new Crawler();
-	    $parser->addHtmlContent($link->getContent());
+            $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
             foreach($this->tags as $tag => $selectors) {
@@ -158,7 +158,9 @@ class HtmlParser extends BaseParser implements ParserInterface
                 }
 
                 // Default is empty string
-                if (!isset(${$tag})) ${$tag} = '';
+                if (!isset(${$tag})) {
+                    ${$tag} = '';
+                }
             }
 
             // Parse all images on this page
@@ -178,7 +180,9 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         $images = array_unique($images);
 
-        if (!isset($cover) && count($images)) $cover = $images[0];
+        if (empty($cover) && count($images)) {
+            $cover = $images[0];
+        }
 
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
